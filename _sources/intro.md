@@ -1,4 +1,4 @@
-# IBM Quantum Challengeで学ぶ量子コンピューティング
+# Quantum Learning Roadmap
 
 このページは [Quantum Tokyo](https://github.com/quantum-tokyo) コミュニティが作成した、IBM Quantum Challenge を題材とした量子コンピューティングの学習教材です。
 
