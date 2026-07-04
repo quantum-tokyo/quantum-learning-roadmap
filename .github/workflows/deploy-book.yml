@@ -4,16 +4,21 @@ on:
   push:
     branches:
     - main
-    # If your git repository has the Jupyter Book within some-subfolder next to
-    # unrelated files, you can make this run only if a file within that specific
-    # folder has been modified.
-    #
-    # paths:
-    # - some-subfolder/**
 
-# This job installs dependencies, builds the book, and pushes it to `gh-pages`
+# Grant GITHUB_TOKEN the permissions required for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  deploy-book:
+  # Build the book HTML with the MyST engine (Jupyter Book 2)
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -30,10 +35,24 @@ jobs:
       run: uv sync --frozen
 
     - name: Build the book
-      run: uv run jupyter-book build ./src/ --all
+      run: uv run jupyter book build --html
+      working-directory: ./src
+      env:
+        BASE_URL: /quantum-learning-roadmap
 
-    - name: Push HTML to github-pages
-      uses: peaceiris/actions-gh-pages@v3.6.1
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./src/_build/html
+        path: ./src/_build/html
+
+  # Deploy the built HTML to GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

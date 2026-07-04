@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 dependencies = [
     "circuit-knitting-toolbox==0.7.2",
     "graphviz>=0.21",
-    "jupyter-book==1.0.0",
+    "jupyter-book==2.1.5",
     "matplotlib>=3.11.0",
     "pylatexenc==2.10",
     "python-dotenv==1.0.1",
