@@ -1,6 +1,6 @@
 #######################################################################################
 # Book settings
-title: IBM Quantum Challengeで学ぶ量子コンピューティング
+title: Quantum Learning Roadmap
 author: Quantum Tokyo
 logo: ./resources/quantum-tokyo-icon.jpg
 # Auto-exclude files not in the toc
@@ -21,7 +21,7 @@ latex:
 #######################################################################################
 # Launch button settings
 repository:
-  url: https://github.com/quantum-tokyo/ibm-quantum-challenge-textbook # The URL to your book's repository
+  url: https://github.com/quantum-tokyo/quantum-learning-roadmap # The URL to your book's repository
   path_to_book: src # A path to your book's folder, relative to the repository root.
   branch: main # Which branch of the repository should be used when creating links (optional)
 launch_buttons:
