@@ -1,0 +1,15 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: 7f8e5fbc-91f0-4438-82b4-b0c60ab92760
+  # title:
+  # description:
+  # keywords: []
+  # authors: []
+  github: https://github.com/quantum-tokyo/quantum-learning-roadmap
+  # To autogenerate a Table of Contents, run "jupyter book init --write-toc"
+site:
+  template: book-theme
+  # options:
+  #   favicon: favicon.ico
+  #   logo: site_logo.png
