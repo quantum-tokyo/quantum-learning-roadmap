@@ -1,0 +1,17 @@
+[project]
+name = "quantum-learning-roadmap"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "circuit-knitting-toolbox==0.7.2",
+    "graphviz>=0.21",
+    "jupyter-book==1.0.0",
+    "matplotlib>=3.11.0",
+    "pylatexenc==2.10",
+    "python-dotenv==1.0.1",
+    "qiskit-aer==0.14.2",
+    "qiskit-ibm-runtime==0.39.0",
+    "qiskit-serverless==0.12.0",
+    "qiskit-transpiler-service==0.4.3",
+    "qiskit[visualization]==1.4.2",
+]
