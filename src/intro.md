@@ -1,11 +1,11 @@
 # Quantum Learning Roadmap
 
-このページは [Quantum Tokyo](https://github.com/quantum-tokyo) コミュニティが作成した、IBM Quantum Challenge を題材とした量子コンピューティングの学習教材です。
+このページは [Quantum Tokyo](https://github.com/quantum-tokyo) コミュニティが作成した、量子コンピューティングの学習教材です。学習ロードマップに沿って、さまざまなリソースを題材に、オープンソースの開発キット Qiskit を使いながら量子コンピューティングの基礎から応用までを段階的に学ぶことが出来ます。
 
-IBM Quantum Challenge は2019年から IBM 主催で開催されている量子コンピュータのイベントです。    
-オープンソース開発キットの Qiskit を使って、量子コンピューティングに関する問題に取り組みます。
+現在は IBM Quantum Challenge の過去問題を中心に構成しています。    
+IBM Quantum Challenge は2019年から IBM 主催で開催されている量子コンピュータのイベントで、Qiskit を使って量子コンピューティングに関する問題に取り組みます。
 
-本教材では過去の Quantum Challenge の問題を扱いながら量子コンピューティングの基礎を学ぶことが出来ます。
+今後、学習ロードマップに沿って他のリソースを基にしたコンテンツも追加していく予定です。
 
 ![](./resources/group-working.png)
 
