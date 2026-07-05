@@ -6,6 +6,8 @@ project:
   github: quantum-tokyo/quantum-learning-roadmap
   toc:
     - file: intro.md
+    - file: learning-roadmap.md
+      title: 学習ロードマップ
     - title: Chapter0 イントロダクション
       children:
         - file: 2024-spring-lab0-welcome-ja.ipynb
