@@ -48,6 +48,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SRC = REPO_ROOT / "src"
 MANIFEST = REPO_ROOT / "scripts" / "notebooks.txt"
 TOC = SRC / "myst.yml"
+NONDET_LEDGER = REPO_ROOT / "scripts" / "known-nondeterministic.txt"
 
 GROUPS = ("local", "hardware", "known-broken")
 
@@ -83,6 +84,13 @@ warnings.simplefilter("always", PendingDeprecationWarning)
 """
 
 WARNING_LINE = re.compile(r"\b(\w*(?:Deprecation)Warning): (.+)")
+
+# A warning raised inside a cell is prefixed with the temp file ipykernel
+# compiled that cell into, which carries the kernel's pid and the machine's temp
+# directory: ".../T/ipykernel_96562/3663264877.py:19: DeprecationWarning: ...".
+# The pid moves every run, so the output is never byte-identical, and the path is
+# one more piece of this machine published to the site. Neither is content.
+IPYKERNEL_PATH = re.compile(r"\S*ipykernel_\d+/\d+\.py")
 
 
 @dataclass
@@ -276,6 +284,10 @@ def run_notebook(
             cell.get("metadata", {}).pop("execution", None)
             if cell.get("outputs"):
                 cell.outputs = coalesce_streams(cell.outputs)
+                for output in cell.outputs:
+                    text = output.get("text")
+                    if isinstance(text, str):
+                        output["text"] = IPYKERNEL_PATH.sub("<ipykernel>.py", text)
         # Only on success: a half-executed notebook is worse than a stale one.
         nbformat.write(nb, entry.path)
     return Result(
@@ -353,47 +365,100 @@ def report_warnings(results: list[Result]) -> None:
         print(f"      {len(notebooks)}x in {', '.join(n.replace('.ipynb', '') for n in where)}")
 
 
-def check_idempotent(entries: list[Entry], timeout: int) -> int:
-    """Regenerate twice and compare bytes; restore the files either way.
+def read_nondeterministic() -> dict[str, str]:
+    """Notebooks allowed to move, and why, from known-nondeterministic.txt."""
+    known: dict[str, str] = {}
+    if not NONDET_LEDGER.exists():
+        return known
+    for lineno, raw in enumerate(NONDET_LEDGER.read_text().splitlines(), start=1):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split(None, 1)
+        if len(parts) < 2:
+            sys.exit(
+                f"{NONDET_LEDGER.name}:{lineno}: expected '<notebook> <reason>'. "
+                "A reason is required -- what was ruled out, not that it moves."
+            )
+        known[parts[0]] = parts[1]
+    return known
 
-    This is the only evidence that regeneration is repeatable. "The numbers
-    looked the same" is not: seeding the samplers left three notebooks here still
-    moving, and the causes were an address in a repr and the kernel's stdout
-    chunking -- neither visible by reading.
+
+def check_idempotent(entries: list[Entry], timeout: int, rounds: int) -> int:
+    """Regenerate twice per round and compare bytes; restore the files either way.
+
+    More than one round because some non-determinism is intermittent: one Lab
+    here moves in about half of runs, so a single pair of passes reports it as
+    stable and the gate goes green on luck. That is the same shape of mistake as
+    trusting "the numbers looked the same".
     """
     originals = {entry.path: entry.path.read_bytes() for entry in entries}
-    passes: list[dict[Path, str]] = []
+    known = read_nondeterministic()
+    moved_in: dict[Path, int] = {path: 0 for path in originals}
     try:
-        for attempt in (1, 2):
-            print(f"  pass {attempt} of 2 ...", flush=True)
-            for entry in entries:
-                result = run_notebook(entry, timeout, False, save_outputs=True)
-                if not result.ok:
-                    print(
-                        f"    {entry.path.name} failed at cell {result.cell_index}:"
-                        f" {result.error}"
-                    )
-                    print("  cannot judge idempotence while a notebook is failing.")
-                    return 1
-            passes.append(
-                {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in originals}
-            )
+        for round_no in range(1, rounds + 1):
+            digests: list[dict[Path, str]] = []
+            for attempt in (1, 2):
+                print(f"  round {round_no}/{rounds}, pass {attempt}/2 ...", flush=True)
+                for entry in entries:
+                    result = run_notebook(entry, timeout, False, save_outputs=True)
+                    if not result.ok:
+                        print(
+                            f"    {entry.path.name} failed at cell {result.cell_index}:"
+                            f" {result.error}"
+                        )
+                        print("  cannot judge idempotence while a notebook is failing.")
+                        return 1
+                digests.append(
+                    {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in originals}
+                )
+            for path in originals:
+                if digests[0][path] != digests[1][path]:
+                    moved_in[path] += 1
     finally:
         for path, data in originals.items():
             path.write_bytes(data)
 
-    unstable = [path for path in originals if passes[0][path] != passes[1][path]]
+    unexpected = {p: n for p, n in moved_in.items() if n and p.name not in known}
+    expected = {p: n for p, n in moved_in.items() if n and p.name in known}
+    stale = [name for name in known if not any(p.name == name and n for p, n in moved_in.items())]
+
     print()
     for path in sorted(originals):
-        print(f"  {'MOVED' if path in unstable else 'same '} {path.name}")
-    print(f"\n{len(originals) - len(unstable)}/{len(originals)} byte-identical across two runs")
-    if unstable:
+        count = moved_in[path]
+        if not count:
+            label = "same "
+        elif path.name in known:
+            label = "moved"
+        else:
+            label = "MOVED"
+        suffix = f"  ({count}/{rounds} rounds)" if count else ""
+        print(f"  {label} {path.name}{suffix}")
+
+    if expected:
+        print("\n## moved, and recorded as known")
+        for path in sorted(expected):
+            print(f"  {path.name}: {known[path.name][:120]}")
+
+    if unexpected:
+        print("\n## moved, not recorded")
+        for path in sorted(unexpected):
+            print(f"  {path.name}  ({moved_in[path]}/{rounds} rounds)")
         print(
-            "\nSomething in these is not deterministic. Seed anything that samples,\n"
-            "and check for a cell ending on an expression whose repr holds an address."
+            "\n  Find the cause and remove it. If you looked and could not, add a line to\n"
+            f"  {NONDET_LEDGER.name} saying what you ruled out."
         )
+
+    if stale:
+        print("\n## recorded as non-deterministic but never moved here")
+        for name in sorted(stale):
+            print(f"  {name}")
+        print("  Either the cause is gone and the line should go, or --rounds was too low.")
+
+    steady = len(originals) - len(unexpected) - len(expected)
+    print(f"\n{steady}/{len(originals)} byte-identical across every round")
     print("(the notebooks were restored; nothing was written)")
-    return 1 if unstable else 0
+    return 1 if unexpected else 0
 
 
 def main() -> int:
@@ -428,7 +493,14 @@ def main() -> int:
     parser.add_argument(
         "--check-idempotent",
         action="store_true",
-        help="regenerate twice and report which notebooks are not byte-identical",
+        help="regenerate twice per round and report which notebooks are not byte-identical",
+    )
+    parser.add_argument(
+        "--rounds",
+        type=int,
+        default=2,
+        help="rounds of two regenerations for --check-idempotent (default 2; one round "
+        "cannot see intermittent non-determinism)",
     )
     parser.add_argument("--list", action="store_true", help="print the manifest and exit")
     args = parser.parse_args()
@@ -456,8 +528,11 @@ def main() -> int:
             sys.exit(f"no notebooks in group(s): {', '.join(sorted(groups))}")
 
     if args.check_idempotent:
-        print(f"Regenerating {len(entries)} notebook(s) twice to compare bytes\n")
-        return check_idempotent(entries, args.timeout)
+        print(
+            f"Regenerating {len(entries)} notebook(s) twice per round,"
+            f" {args.rounds} round(s), to compare bytes\n"
+        )
+        return check_idempotent(entries, args.timeout, args.rounds)
 
     print(f"Running {len(entries)} notebook(s) from {SRC}", end="")
     if args.warnings_as_errors:

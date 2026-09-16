@@ -46,6 +46,8 @@ LEDGER = REPO_ROOT / "scripts" / "accepted-output-changes.txt"
 # regenerating outputs on someone's laptop.
 LEAKS = [
     (re.compile(r"(?:/Users|/home)/[A-Za-z0-9._-]+/"), "an absolute path from someone's machine"),
+    # The temp directory a kernel compiled a cell into; carries the pid too.
+    (re.compile(r"/var/folders/\S+|ipykernel_\d+"), "the kernel's temp path"),
     (re.compile(r"cannot find \.env"), "whether a .env exists here"),
     (re.compile(r"Package\(s\) not found"), "what an interpreter that is not the kernel can see"),
     (re.compile(r"\bat 0x[0-9a-fA-F]{6,}"), "an object's memory address"),
