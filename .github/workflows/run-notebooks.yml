@@ -1,0 +1,33 @@
+name: run notebooks
+
+# The book build renders the outputs already stored in each .ipynb and never
+# starts a kernel, so it stays green even when a Lab has stopped working. This
+# workflow is what actually runs them.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+
+    - name: Set up Python
+      run: uv python install
+
+    - name: Install dependencies
+      run: uv sync --frozen
+
+    # Only the "local" group: the rest need an IBM Quantum account, which CI
+    # does not have. See scripts/notebooks.txt.
+    - name: Run the notebooks that work offline
+      run: uv run python scripts/run-notebooks.py --group local

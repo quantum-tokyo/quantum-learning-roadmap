@@ -1,0 +1,37 @@
+# Which Labs scripts/run-notebooks.py executes, and where each one can run.
+#
+#   local         completes offline (Aer / fake backends only) -- this is the group CI runs
+#   hardware      needs an IBM Quantum account from the root .env -- run by hand, never in CI
+#   known-broken  fails for a reason tracked separately; excluded so the local group stays honest
+#
+# The groups below were measured, not guessed: they are what `--group all`
+# reported against the Qiskit 1.4.2 baseline before the 2.0 upgrade began.
+#
+# Only the notebooks published through src/myst.yml's toc are listed, and
+# run-notebooks.py refuses to run unless this list and that toc match exactly.
+# So publishing a Lab means giving it a group here too. The unpublished Labs and
+# the _bk backups are deliberately out of scope.
+#
+# format:  <group>  <notebook>   # note
+
+local           2024-spring-lab0-welcome-ja.ipynb
+local           2020-w1-a-adder-ja.ipynb
+local           2021-spring-lab1-toffoli.ipynb
+local           2022-autumn-lab1-bernstein-vazirani.ipynb
+local           2023-spring-lab2-teleportation-ja.ipynb
+local           2020-w1-b-grover-ja.ipynb
+local           2023-spring-lab3-iqpe.ipynb
+local           2021-spring-lab2-shor-ja.ipynb
+local           2021-spring-lab3-error-ja.ipynb
+local           2023-spring-lab4-error-correction.ipynb
+local           2024-spring-lab1-qiskit10-ja-part1.ipynb
+local           2022-autumn-lab1-runtime-ja.ipynb
+local           2024-spring-lab1-qiskit10-ja-part2.ipynb
+local           2023-spring-lab1-dynamic-ja.ipynb
+local           2024-spring-lab2-transpilation-ja.ipynb
+
+hardware        2024-spring-lab3-circuit-knitting-ja.ipynb  # QiskitRuntimeService() -- AccountNotFoundError without an account
+hardware        2024-spring-lab3-ai-transpiler-ja.ipynb     # the AI transpiler is a cloud service; needs a token
+hardware        2024-spring-lab4-vqc-hw-ja.ipynb            # reads QXInstance from .env
+
+known-broken    2021-autumn-lab3-qml-ja.ipynb  # imports sklearn and qiskit_machine_learning, neither of which is a dependency of this project

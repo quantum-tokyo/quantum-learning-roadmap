@@ -1941,6 +1941,12 @@ dependencies = [
     { name = "qiskit-ibm-transpiler" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "nbclient" },
+    { name = "pyyaml" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "graphviz", specifier = ">=0.21" },
@@ -1953,6 +1959,12 @@ requires-dist = [
     { name = "qiskit-aer", specifier = "==0.17.2" },
     { name = "qiskit-ibm-runtime", specifier = "==0.40.1" },
     { name = "qiskit-ibm-transpiler", specifier = "==0.13.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "nbclient", specifier = ">=0.10" },
+    { name = "pyyaml", specifier = ">=6" },
 ]
 
 [[package]]

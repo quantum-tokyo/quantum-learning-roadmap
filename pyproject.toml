@@ -14,3 +14,12 @@ dependencies = [
     "qiskit-ibm-transpiler==0.13.0",
     "qiskit[visualization]==2.0.3",
 ]
+
+[dependency-groups]
+# scripts/run-notebooks.py drives the notebooks; nbclient is otherwise only
+# present as a transitive dependency of jupyter-book.
+dev = [
+    "nbclient>=0.10",
+    # run-notebooks.py reads src/myst.yml's toc to check the manifest against it.
+    "pyyaml>=6",
+]
