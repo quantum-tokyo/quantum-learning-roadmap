@@ -12,3 +12,44 @@
 #
 # Example (not active):
 #   2024-spring-lab2-transpilation-ja.ipynb 83 a1b2c3d4e5f6 routing plugin list lost 'stochastic', removed in Qiskit 2.0
+
+# --- Qiskit 2.0.3 -> 2.4.2 ---
+
+# The mcx mode= deprecation arrived in Qiskit 2.1 and its warning is now part of
+# the page. Kept rather than fixed: dropping mode= changes how the multi-
+# controlled X is synthesised, and this Lab teaches that circuit's structure.
+2020-w1-b-grover-ja.ipynb 42 71bfceba0a9d qiskit 2.1 deprecated mcx's mode= argument; the call is left as it is on purpose, so the warning is now on the page. Tracked for Qiskit 3.0.
+
+# Drawings that changed because the code moved to the function forms. The
+# circuits are the same: parameter count, parameter order and the unitary were
+# all checked against the class forms before the edit.
+2021-spring-lab2-shor-ja.ipynb 14 2aad6aedcac4 QFTGate(3).inverse() draws at a different width than QFT(3, inverse=True); same circuit.
+2022-autumn-lab1-runtime-ja.ipynb 65 ac406ef0fd54 real_amplitudes returns a plain circuit, which decomposes differently for drawing than the RealAmplitudes blueprint; same circuit.
+2024-spring-lab1-qiskit10-ja-part2.ipynb 8 50ec457d806b n_local draws at a different width than TwoLocal; same circuit.
+
+# Seeding a transpile call that had none: the routing was previously drawn from a
+# fresh random seed on every run, so this drawing was never reproducible.
+2023-spring-lab4-error-correction.ipynb 45 3e9dd92a1037 seed_transpiler=12345 added, so routing is now fixed instead of random per run.
+
+# The VQE Lab's numbers moved. An identical unitary does not mean an identical
+# transpiled circuit, and on a noisy backend a different ISA circuit gives a
+# different result. Final energy -2.81 -> -2.41 over the same 30 iterations. The
+# Lab's text is qualitative ("the energy was minimised") and quotes no number.
+2024-spring-lab1-qiskit10-ja-part2.ipynb 14 ef7aa8dbfb83 the ansatz's gate structure differs from TwoLocal's even though the unitary matches, so transpilation lands on a different ISA circuit.
+2024-spring-lab1-qiskit10-ja-part2.ipynb 28 1a0fca86a90e convergence plot follows the new trajectory; shape unchanged, final energy -2.41 rather than -2.81 under FakeSherbrooke noise.
+
+# Transpiler results changed in Qiskit 2.4: qs_decomposition's opt_a1 and opt_a2
+# defaults went from True to None, which changes unitary synthesis, so depth and
+# gate counts move. Level 3 is now better than level 2 again -- in 2.0.3 the two
+# produced identical circuits.
+2024-spring-lab2-transpilation-ja.ipynb 51 300f805a0343 optimization level 1 circuit drawing; depth 205 -> 217.
+2024-spring-lab2-transpilation-ja.ipynb 56 fe8a7240a726 optimization level 2 circuit drawing; depth 156 -> 182.
+2024-spring-lab2-transpilation-ja.ipynb 61 29c8f91c1e13 optimization level 3 circuit drawing; depth 156 -> 182, and no longer identical to level 2.
+2024-spring-lab2-transpilation-ja.ipynb 65 e1993519c65f comparison plot over optimization levels, following the above.
+2024-spring-lab2-transpilation-ja.ipynb 79 341a17952813 layout stage listing and its figures; the layout chosen at each level changed.
+2024-spring-lab2-transpilation-ja.ipynb 95 6a5e0e529749 comparison plot over layout methods, following the above.
+2024-spring-lab2-transpilation-ja.ipynb 100 74eaf4c42745 comparison plot over approximation degrees, following the above.
+2024-spring-lab2-transpilation-ja.ipynb 106 7a347197981b asap timeline drawing of the rescheduled circuit.
+2024-spring-lab2-transpilation-ja.ipynb 107 6cc653c20b46 alap timeline drawing of the rescheduled circuit.
+2024-spring-lab2-transpilation-ja.ipynb 121 7a347197981b asap timeline drawing, same output as cell 106.
+2024-spring-lab2-transpilation-ja.ipynb 124 7a347197981b timeline drawing after the dynamical decoupling pass.

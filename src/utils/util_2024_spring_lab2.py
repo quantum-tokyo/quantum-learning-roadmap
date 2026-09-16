@@ -2,11 +2,20 @@ import numpy as np
 from qiskit import transpile, QuantumCircuit
 
 def version_check():
+    """Report the Qiskit major version, which is the granularity that matters.
+
+    This has now been wrong twice by pinning a full version here: first '1.0.2',
+    then '2.0.'. Every minor upgrade made the Lab greet the reader with "wrong
+    version". The Labs target Qiskit 2.x; pyproject.toml is where the exact
+    version lives.
+    """
     import qiskit
-    if qiskit.version.VERSION.startswith('2.0.'):
+    if qiskit.version.VERSION.split('.')[0] == '2':
         return print(f"You have the right version ({qiskit.version.VERSION})! Enjoy the challenge!")
-    else:
-        return print(f"This Lab targets Qiskit 2.0.x, but you are running {qiskit.version.VERSION}. Run `uv sync` to install the pinned version.")
+    return print(
+        f"This Lab targets Qiskit 2.x, but you are running {qiskit.version.VERSION}."
+        " Run `uv sync` to install the pinned version."
+    )
 
 def transpile_scoring(circ, layout, backend):
 
