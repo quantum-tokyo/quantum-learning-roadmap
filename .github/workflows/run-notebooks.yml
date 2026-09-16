@@ -16,6 +16,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    # The transpilation Lab draws coupling maps, and qiskit's plot_coupling_map
+    # needs the Graphviz binaries. The `graphviz` pip package in pyproject.toml
+    # is only the Python binding and does not bring them.
+    - name: Install Graphviz
+      run: sudo apt-get update && sudo apt-get install -y graphviz
+
     - name: Install uv
       uses: astral-sh/setup-uv@v5
       with:
