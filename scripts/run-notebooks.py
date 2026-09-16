@@ -265,7 +265,10 @@ def coalesce_streams(outputs: list) -> list:
             previous["text"] = previous["text"] + text
             continue
         if text is not None:
-            output = dict(output, text=text)
+            # Assign into the node rather than building a plain dict from it:
+            # nbformat.write reaches for output.output_type, which a dict does
+            # not have, and the write fails.
+            output["text"] = text
         merged.append(output)
     return merged
 
