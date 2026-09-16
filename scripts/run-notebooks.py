@@ -30,12 +30,13 @@ from __future__ import annotations
 import argparse
 import contextlib
 import copy
+import hashlib
 import os
 import re
 import sys
 import tempfile
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import nbformat
@@ -73,6 +74,16 @@ for _category in (DeprecationWarning, PendingDeprecationWarning):
 del _category
 """
 
+# For an inventory rather than a gate: show every warning, including the repeats
+# Python would otherwise hide, so a count per Lab is possible.
+WARNINGS_REPORT_PREAMBLE = """\
+import warnings
+warnings.simplefilter("always", DeprecationWarning)
+warnings.simplefilter("always", PendingDeprecationWarning)
+"""
+
+WARNING_LINE = re.compile(r"\b(\w*(?:Deprecation)Warning): (.+)")
+
 
 @dataclass
 class Entry:
@@ -105,6 +116,7 @@ class Result:
     error: str = ""
     skipped_cells: int = 0
     kernel_stderr: str = ""
+    warnings: list = field(default_factory=list)
 
 
 def published_notebooks() -> list[str]:
@@ -182,7 +194,32 @@ def read_manifest() -> list[Entry]:
     return entries
 
 
-def run_notebook(entry: Entry, timeout: int, warnings_as_errors: bool, save_outputs: bool = False) -> Result:
+def collect_warnings(nb) -> list[tuple[str, str]]:
+    """Deprecation warnings a run left in the notebook's stderr, as (category, text).
+
+    Read from the outputs rather than from the kernel: Python writes warnings to
+    stderr, which nbclient stores as stream outputs, so nothing has to be handed
+    back across the wire.
+    """
+    found: list[tuple[str, str]] = []
+    for cell in nb.cells:
+        for output in cell.get("outputs", []):
+            if output.get("output_type") != "stream" or output.get("name") != "stderr":
+                continue
+            text = output.get("text", "")
+            text = "".join(text) if isinstance(text, list) else text
+            for match in WARNING_LINE.finditer(text):
+                found.append((match.group(1), match.group(2).strip()))
+    return found
+
+
+def run_notebook(
+    entry: Entry,
+    timeout: int,
+    warnings_as_errors: bool,
+    save_outputs: bool = False,
+    collect_warnings_too: bool = False,
+) -> Result:
     nb = nbformat.read(entry.path, as_version=4)
     client = NotebookClient(
         nb,
@@ -204,10 +241,12 @@ def run_notebook(entry: Entry, timeout: int, warnings_as_errors: bool, save_outp
     started = time.monotonic()
     skipped = 0
     with held_stderr() as kernel_output, client.setup_kernel():
-        if warnings_as_errors:
-            client.execute_cell(
-                nbformat.v4.new_code_cell(WARNINGS_PREAMBLE), cell_index=-1
-            )
+        preamble = (
+            WARNINGS_PREAMBLE if warnings_as_errors
+            else WARNINGS_REPORT_PREAMBLE if collect_warnings_too else None
+        )
+        if preamble:
+            client.execute_cell(nbformat.v4.new_code_cell(preamble), cell_index=-1)
         for index, cell in enumerate(nb.cells):
             if cell.cell_type != "code" or not cell.source.strip():
                 continue
@@ -239,7 +278,13 @@ def run_notebook(entry: Entry, timeout: int, warnings_as_errors: bool, save_outp
                 cell.outputs = coalesce_streams(cell.outputs)
         # Only on success: a half-executed notebook is worse than a stale one.
         nbformat.write(nb, entry.path)
-    return Result(entry, ok=True, seconds=time.monotonic() - started, skipped_cells=skipped)
+    return Result(
+        entry,
+        ok=True,
+        seconds=time.monotonic() - started,
+        skipped_cells=skipped,
+        warnings=collect_warnings(nb) if collect_warnings_too else [],
+    )
 
 
 def coalesce_streams(outputs: list) -> list:
@@ -285,6 +330,72 @@ def summarise(exc: CellExecutionError) -> str:
     return lines[-1] if lines else "unknown failure"
 
 
+def report_warnings(results: list[Result]) -> None:
+    """One line per distinct deprecation, with where it fires.
+
+    --warnings-as-errors stops at the first one, which makes it a gate but
+    useless for taking stock of what the next major release will remove.
+    """
+    tally: dict[tuple[str, str], list[str]] = {}
+    for result in results:
+        for category, message in result.warnings:
+            tally.setdefault((category, message.split(". ")[0]), []).append(
+                result.entry.path.name
+            )
+    print()
+    if not tally:
+        print("No deprecation warnings.")
+        return
+    print(f"## deprecation warnings ({len(tally)} distinct)")
+    for (category, message), notebooks in sorted(tally.items(), key=lambda kv: -len(kv[1])):
+        where = sorted(set(notebooks))
+        print(f"  [{category}] {message[:150]}")
+        print(f"      {len(notebooks)}x in {', '.join(n.replace('.ipynb', '') for n in where)}")
+
+
+def check_idempotent(entries: list[Entry], timeout: int) -> int:
+    """Regenerate twice and compare bytes; restore the files either way.
+
+    This is the only evidence that regeneration is repeatable. "The numbers
+    looked the same" is not: seeding the samplers left three notebooks here still
+    moving, and the causes were an address in a repr and the kernel's stdout
+    chunking -- neither visible by reading.
+    """
+    originals = {entry.path: entry.path.read_bytes() for entry in entries}
+    passes: list[dict[Path, str]] = []
+    try:
+        for attempt in (1, 2):
+            print(f"  pass {attempt} of 2 ...", flush=True)
+            for entry in entries:
+                result = run_notebook(entry, timeout, False, save_outputs=True)
+                if not result.ok:
+                    print(
+                        f"    {entry.path.name} failed at cell {result.cell_index}:"
+                        f" {result.error}"
+                    )
+                    print("  cannot judge idempotence while a notebook is failing.")
+                    return 1
+            passes.append(
+                {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in originals}
+            )
+    finally:
+        for path, data in originals.items():
+            path.write_bytes(data)
+
+    unstable = [path for path in originals if passes[0][path] != passes[1][path]]
+    print()
+    for path in sorted(originals):
+        print(f"  {'MOVED' if path in unstable else 'same '} {path.name}")
+    print(f"\n{len(originals) - len(unstable)}/{len(originals)} byte-identical across two runs")
+    if unstable:
+        print(
+            "\nSomething in these is not deterministic. Seed anything that samples,\n"
+            "and check for a cell ending on an expression whose repr holds an address."
+        )
+    print("(the notebooks were restored; nothing was written)")
+    return 1 if unstable else 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
@@ -309,9 +420,21 @@ def main() -> int:
         action="store_true",
         help="write the fresh outputs back into the .ipynb, so the built site shows what this Qiskit version produces",
     )
+    parser.add_argument(
+        "--warnings-report",
+        action="store_true",
+        help="inventory the deprecation warnings instead of failing on them",
+    )
+    parser.add_argument(
+        "--check-idempotent",
+        action="store_true",
+        help="regenerate twice and report which notebooks are not byte-identical",
+    )
     parser.add_argument("--list", action="store_true", help="print the manifest and exit")
     args = parser.parse_args()
 
+    if args.warnings_report and args.warnings_as_errors:
+        sys.exit("--warnings-report and --warnings-as-errors ask for opposite things")
     if args.save_outputs and args.warnings_as_errors:
         sys.exit("--save-outputs and --warnings-as-errors do not mix: the preamble cell is not part of the notebook")
 
@@ -332,6 +455,10 @@ def main() -> int:
         if not entries:
             sys.exit(f"no notebooks in group(s): {', '.join(sorted(groups))}")
 
+    if args.check_idempotent:
+        print(f"Regenerating {len(entries)} notebook(s) twice to compare bytes\n")
+        return check_idempotent(entries, args.timeout)
+
     print(f"Running {len(entries)} notebook(s) from {SRC}", end="")
     if args.warnings_as_errors:
         print(" with Qiskit deprecation warnings as errors")
@@ -343,13 +470,22 @@ def main() -> int:
 
     results: list[Result] = []
     for entry in entries:
-        result = run_notebook(entry, args.timeout, args.warnings_as_errors, args.save_outputs)
+        result = run_notebook(
+            entry,
+            args.timeout,
+            args.warnings_as_errors,
+            args.save_outputs,
+            collect_warnings_too=args.warnings_report,
+        )
         results.append(result)
         status = "ok  " if result.ok else "FAIL"
         skipped = f", {result.skipped_cells} pip cell(s) skipped" if result.skipped_cells else ""
         print(f"  {status} {entry.path.name}  ({result.seconds:.0f}s{skipped})", flush=True)
         if not result.ok:
             print(f"         cell {result.cell_index}: {result.error}")
+
+    if args.warnings_report:
+        report_warnings(results)
 
     failed = [r for r in results if not r.ok]
     print()

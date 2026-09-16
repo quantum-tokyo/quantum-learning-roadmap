@@ -1,0 +1,14 @@
+# Structural output changes that have been read and judged correct.
+#
+# compare-notebook-outputs.py fails on any structural change -- a new warning
+# block, a different plugin list, a table that changed shape -- until it is
+# recorded here. Numeric-only changes are reported, not blocked.
+#
+# format:  <notebook> <cell> <digest> <why this is correct>
+#
+# The digest is of the new output. It ties the acceptance to that exact content,
+# so if the same cell changes again the check asks again instead of staying
+# quiet. A reason is required; the script refuses to parse an entry without one.
+#
+# Example (not active):
+#   2024-spring-lab2-transpilation-ja.ipynb 83 a1b2c3d4e5f6 routing plugin list lost 'stochastic', removed in Qiskit 2.0
