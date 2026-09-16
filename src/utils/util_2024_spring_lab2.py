@@ -3,10 +3,10 @@ from qiskit import transpile, QuantumCircuit
 
 def version_check():
     import qiskit
-    if qiskit.version.VERSION == '1.0.2':
-        return print("You have the right version! Enjoy the challenge!")
+    if qiskit.version.VERSION.startswith('2.0.'):
+        return print(f"You have the right version ({qiskit.version.VERSION})! Enjoy the challenge!")
     else:
-        return print("please install right version by copy/paste and execute - !pip install 'qiskit[visualization]' == 1.0.2'")
+        return print(f"This Lab targets Qiskit 2.0.x, but you are running {qiskit.version.VERSION}. Run `uv sync` to install the pinned version.")
 
 def transpile_scoring(circ, layout, backend):
 
@@ -34,31 +34,31 @@ def transpile_scoring(circ, layout, backend):
     t2s = [backend.qubit_properties(qq).t2 for qq in range(num_qubits)]
 
     
-    for item in circ._data:
+    for item in circ.data:
         for gate in backend.operation_names:
-            if item[0].name == gate:
-                if (item[0].name == 'cz') or (item[0].name == 'ecr'):
-                    q0 = circ.find_bit(item[1][0]).index
-                    q1 = circ.find_bit(item[1][1]).index
-                    fid *= 1 - backend.target[item[0].name][(q0, q1)].error
+            if item.operation.name == gate:
+                if (item.operation.name == 'cz') or (item.operation.name == 'ecr'):
+                    q0 = circ.find_bit(item.qubits[0]).index
+                    q1 = circ.find_bit(item.qubits[1]).index
+                    fid *= 1 - backend.target[item.operation.name][(q0, q1)].error
                     touched.add(q0)
                     touched.add(q1)
-                elif item[0].name == 'measure':
-                    q0 = circ.find_bit(item[1][0]).index
-                    fid *= 1 - backend.target[item[0].name][(q0, )].error
+                elif item.operation.name == 'measure':
+                    q0 = circ.find_bit(item.qubits[0]).index
+                    fid *= 1 - backend.target[item.operation.name][(q0, )].error
                     touched.add(q0)
     
-                elif item[0].name == 'delay':
-                    q0 = circ.find_bit(item[1][0]).index
+                elif item.operation.name == 'delay':
+                    q0 = circ.find_bit(item.qubits[0]).index
                     # Ignore delays that occur before gates
                     # This assumes you are in ground state and errors
                     # do not occur.
                     if q0 in touched:
-                        time = item[0].duration * dt
+                        time = item.operation.duration * dt
                         fid *= 1-qubit_error(time, t1s[q0], t2s[q0])
                 else:
-                    q0 = circ.find_bit(item[1][0]).index
-                    fid *= 1 - backend.target[item[0].name][(q0, )].error
+                    q0 = circ.find_bit(item.qubits[0]).index
+                    fid *= 1 - backend.target[item.operation.name][(q0, )].error
                     touched.add(q0)
 
     return fid
