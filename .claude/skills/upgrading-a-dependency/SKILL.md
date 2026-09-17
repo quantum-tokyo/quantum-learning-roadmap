@@ -123,9 +123,45 @@ A changed output can contradict the Japanese text beside it — a quoted number,
 
 **`!pip` cells are not regenerated.** Their output is preserved so nobody's machine ends up on the page, which means `!pip show` keeps its old version numbers while every other output updates. Check any cell that displays a version by eye.
 
-### 9. Say what CI did not cover
+### 9. Build the site, and look at the pages that changed
 
-`hardware` Labs keep their old outputs unless you run them with a token. State in the PR which groups ran and which did not, rather than shipping a silent mix.
+```bash
+./scripts/build.sh
+```
+
+A successful build does not mean the pages are right. It renders whatever is stored,
+so a cleared output renders as a gap, a timeline drawing can come out blank, and a
+wide table can be clipped — all with the build exiting 0. Open the pages for the
+Labs whose outputs moved and look at them.
+
+### 10. Handle the groups CI does not run
+
+`local` is the only group CI executes. The others need deciding on, not just
+mentioning:
+
+- **`hardware`** — three Labs that need an IBM Quantum account. Their stored outputs
+  stay on whatever version last ran them, so **the gap widens with every upgrade
+  they sit out**. Run them with a token if you have one
+  (`--group hardware --save-outputs`), and if you do not, say in the PR which
+  version their outputs are from. Do not ship a silent mix of old and new.
+- **`known-broken`** — check whether the upgrade changed anything for it. An entry
+  there is a claim about the current state, not a permanent exemption.
+- **Reclassification** — if a Lab moved between groups (it now needs credentials, or
+  it stopped working), update `scripts/notebooks.txt`. The manifest must match
+  `src/myst.yml`'s toc or `run-notebooks.py` refuses to start.
+
+### 11. Push, and let CI disagree with you
+
+Green locally is not green in CI, and the difference is the environment rather than
+the code. This upgrade's predecessor passed 15/15 on macOS and failed on the runner:
+`plot_coupling_map` needs the Graphviz binaries, and the laptop happened to have
+`dot` installed. `.github/workflows/run-notebooks.yml` now installs it, but the shape
+of that mistake recurs — anything the Labs reach outside Python is a candidate.
+
+Wait for the workflow before calling the upgrade done. And put the evidence in the PR
+body: versions before and after, what `api-surface-diff.py` reported, the ledger lines
+you added and why, the magnitude of the numeric-only moves and why they are
+acceptable, the `--rounds` you used, and which groups ran.
 
 ## Red flags
 
@@ -134,5 +170,7 @@ A changed output can contradict the Japanese text beside it — a quoted number,
 - "The churn is unavoidable — I'll narrow the diff"
 - "The resolver succeeded, so the versions are compatible"
 - "Only numbers changed, nothing structural"
+- "The build succeeded, so the pages are fine"
+- "It is green on my machine, so CI will be green"
 
 Each means going back to the step that would have caught it.
