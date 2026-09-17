@@ -28,7 +28,7 @@ Also weigh what a bump drags in. `qiskit-ibm-transpiler`'s qiskit-2.x releases p
 ### 2. Learn what actually changed
 
 ```bash
-uv run python scripts/api-surface-diff.py <pkg> --old <前の版>
+uv run python scripts/api-surface-diff.py <pkg> --old <previous version>
 ```
 
 Run it **for every package the lock moved**, not only qiskit. Release notes are not enough: fetching the Qiskit 2.0 notes truncated silently at the same sentence twice, and two real breakages were in neither the retrievable notes nor the migration guides.
@@ -37,7 +37,7 @@ Three things it reports, in descending order of urgency:
 
 - **unresolvable `__all__`** — stop here. A star import from that module raises, which is exactly how qiskit 2.5.0 broke the toffoli Lab. The script exits non-zero on this.
 - **removed symbols and modules** — check whether the Labs or the installed dependencies use them.
-- **changed defaults** — the ones that move numbers while every call still works. This is where the explanation for step 6's numeric diffs comes from.
+- **changed defaults** — the ones that move numbers while every call still works. This is where the explanation for step 7's numeric diffs comes from.
 
 ### 3. Shape the pins
 
@@ -53,7 +53,37 @@ uv run python scripts/run-notebooks.py --group local
 
 Execution stops at the first error, so failures arrive serially.
 
-### 5. Make regeneration deterministic, and prove it
+### 5. Take stock of the deprecations, and count before deciding scope
+
+```bash
+uv run python scripts/run-notebooks.py --group local --warnings-report
+```
+
+This collects them. `--warnings-as-errors` stops at the first one, which makes it a
+gate but useless for taking stock.
+
+**Only the warnings that reach the saved output become part of the page.** In the
+2.4 upgrade, 13 distinct deprecations fired but 3 reached the output — the rest are
+raised inside libraries or suppressed as repeats and never land in a cell's stderr.
+Those three force a decision; the rest are debt for an issue.
+
+**Count the source sites, not the occurrences.** Three MCX deprecations fired 132
+times each and came from two lines. A number that looks like the size of the job
+usually is not.
+
+For each warning that does reach the output, either fix the call or accept it in
+`accepted-output-changes.txt` with the reason. Accepting is a legitimate answer:
+dropping `mcx(mode=...)` changes how the multi-controlled X is synthesised, and the
+Grover Lab teaches that circuit's structure.
+
+**If you replace a deprecated class with its function form, an equivalence check is
+necessary but not sufficient.** Matching parameter count, parameter order and the
+unitary is worth doing — the VQE Labs bind `x0` positionally, so order matters — but
+the same unitary built from a different gate sequence transpiles differently, and on
+a noisy backend that gives a different answer. `TwoLocal` to `n_local` moved a VQE's
+final energy from -2.81 to -2.41 with every equivalence check passing.
+
+### 6. Make regeneration deterministic, and prove it
 
 ```bash
 uv run python scripts/run-notebooks.py --group local --check-idempotent --rounds 3
@@ -70,9 +100,9 @@ Where to look when something moves:
 | A cell ending on an expression whose `repr` holds an address | end the line with `;` |
 | Timestamps, stdout chunking, the ipykernel temp path | already normalised on save; nothing to do |
 
-`known-nondeterministic.txt` is for what survives all of that **after you looked and could not find the cause**. It requires a reason that says what you ruled out. Do not reach for it instead of step 5. If it reports an entry that never moved, either the cause is gone and the line goes, or `--rounds` was too low.
+`known-nondeterministic.txt` is for what survives all of that **after you looked and could not find the cause**. It requires a reason that says what you ruled out. Do not reach for it instead of doing the work above. If it reports an entry that never moved, either the cause is gone and the line goes, or `--rounds` was too low.
 
-### 6. Regenerate, then read the diff
+### 7. Regenerate, then read the diff
 
 ```bash
 uv run python scripts/run-notebooks.py --group local --save-outputs
@@ -87,13 +117,13 @@ Compare against `main` as well: that is the cumulative change a reader receives.
 - **stale ledger entries** — a previous section's digests stop matching once the same cell moves again. Replace those lines; do not leave them.
 - **numeric-only** — not blocked, and **the most dangerous category**. Read the magnitudes. A few percent on a noisy backend is fine. Broken is: Grover's peak no longer the maximum, an error-correction fidelity that stops supporting the claim, a VQE that no longer looks minimised, a counts distribution whose mode is not the answer. Nothing raised, and the Lab is wrong.
 
-### 7. Follow the prose
+### 8. Follow the prose
 
 A changed output can contradict the Japanese text beside it — a quoted number, a plugin name, a class name the learner is told to call. Check the markdown around every changed cell.
 
 **`!pip` cells are not regenerated.** Their output is preserved so nobody's machine ends up on the page, which means `!pip show` keeps its old version numbers while every other output updates. Check any cell that displays a version by eye.
 
-### 8. Say what CI did not cover
+### 9. Say what CI did not cover
 
 `hardware` Labs keep their old outputs unless you run them with a token. State in the PR which groups ran and which did not, rather than shipping a silent mix.
 
