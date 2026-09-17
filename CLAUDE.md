@@ -19,13 +19,9 @@ uv run jupyter lab      # open notebooks to run/edit hands-on
 
 uv run python scripts/run-notebooks.py --group local   # execute the Labs that work offline
 uv run python scripts/run-notebooks.py --list          # see the groups (local / hardware / known-broken)
-
-uv run python scripts/api-surface-diff.py qiskit --old 2.0.3        # what a version change removed
-#   run this for every package the lock moved, not only qiskit
-uv run python scripts/compare-notebook-outputs.py --base <ref>      # did the outputs change, and how
-uv run python scripts/run-notebooks.py --group local --check-idempotent
-uv run python scripts/run-notebooks.py --group local --warnings-report
 ```
+
+`scripts/` also holds `api-surface-diff.py`, `compare-notebook-outputs.py` and two ledgers, which exist for changing an installed version. **Read the `upgrading-a-dependency` skill before touching a version in `pyproject.toml`** — the procedure and the traps live there rather than here, because they are needed a few times a year and this file is read on every task.
 
 `uv sync` is not quite enough to run every Lab: the transpilation Lab draws coupling maps, and qiskit's `plot_coupling_map` needs the **Graphviz binaries** (`dot`). The `graphviz` entry in `pyproject.toml` is only the Python binding — install Graphviz itself (`brew install graphviz`, `apt-get install graphviz`), which is what `.github/workflows/run-notebooks.yml` does.
 
@@ -35,9 +31,7 @@ There is no linter. Verification = the notebooks execute cleanly and the site bu
 
 **The book build does not run notebooks.** `jupyter book build` renders the outputs already stored in each `.ipynb`, so a Lab can be broken without the build or the deploy workflow noticing. `scripts/run-notebooks.py` is the execution path, and `.github/workflows/run-notebooks.yml` runs its `local` group on every push and PR. Which Lab belongs to which group is recorded in `scripts/notebooks.txt`, and the script refuses to run unless that list matches `src/myst.yml`'s `toc` exactly — so **adding a Lab to the `toc` means giving it a group in `scripts/notebooks.txt` as well**, or CI fails with the mismatch named.
 
-**Stored outputs are reproducible, and should stay that way.** Because the site renders them, `uv run python scripts/run-notebooks.py --group local --save-outputs` regenerates them, and running it twice leaves every file byte-identical. That holds only because the sampling is seeded — `seed_simulator=12345` on Aer `run()` calls, `seed=12345` on `StatevectorSampler`, `options={"simulator": {"seed_simulator": 12345}}` on the `qiskit-ibm-runtime` primitives, `seed_transpiler=` on every pass manager — and because the script drops execution timestamps, merges adjacent stream outputs, and keeps the committed output of cells that report the machine rather than Qiskit (`!pip`, `%dotenv`). When adding a Lab, seed anything that samples — including `seed_transpiler`, which is easy to miss because routing does not look random — and avoid ending a cell on an expression whose `repr` contains a memory address (`plt.legend()` needs a trailing `;`).
-
-**Two ledgers carry the judgement calls.** `scripts/accepted-output-changes.txt` records structural output changes that have been read and accepted, keyed to a digest of the output so the same cell changing again asks afresh. `scripts/known-nondeterministic.txt` records notebooks that still move between regenerations where the cause was looked for and not found. Both require a reason; an entry without one is refused. `--check-idempotent` defaults to two rounds because one round cannot see intermittent non-determinism, which is how this was got wrong before.
+**Stored outputs must stay reproducible.** Regenerating them twice has to leave every file byte-identical, because that is the only thing that makes an output diff mean anything. So when adding a Lab, seed everything that samples — `seed_simulator=` on Aer `run()`, `seed=` on `StatevectorSampler`, `seed_transpiler=` on every pass manager, the last being the one people miss because routing does not look random — and do not end a cell on an expression whose `repr` contains a memory address (`plt.legend()` needs a trailing `;`).
 
 ## Architecture / structure
 
@@ -52,10 +46,7 @@ There is no linter. Verification = the notebooks execute cleanly and the site bu
 ## Working conventions
 
 - **Content is Japanese.** Match the existing language and tone of surrounding notebooks/markdown when editing or adding explanations.
-- **The Qiskit stack states floors; `uv.lock` is what pins.** The five packages constrain each other — `qiskit-ibm-transpiler` pins `qiskit-serverless`, which caps `qiskit-ibm-runtime` — so hand-picking exact versions does not survive an upgrade. `pyproject.toml` gives floors and the lock carries reproducibility. Build tooling (`jupyter-book`, `pylatexenc`) keeps exact pins: a major bump there changes the site.
-- **qiskit is capped below 2.5 on purpose.** qiskit 2.5.0 added `qiskit.visualization.__all__` with a `draw` entry that does not resolve, so `from qiskit.visualization import *` raises — which the toffoli Lab does. Lift the cap once that is fixed upstream; the reason is repeated in `pyproject.toml`.
-- **Two packages were renamed upstream.** `circuit-knitting-toolbox` caps qiskit at `<2.0` and became `qiskit-addon-cutting`; `qiskit-transpiler-service` became `qiskit-ibm-transpiler`.
-- **`qiskit-ibm-transpiler` is not in the default install.** Its qiskit-2.x releases pull `qiskit-gym`, and with it torch, the CUDA toolkit, `ray` and `qiskit-serverless` — 116 packages become 211. Its only consumer is the AI transpiler Lab, which needs an IBM Quantum account and never runs in CI. `uv sync --group ai-transpiler` when you need it.
-- **A declared constraint is not compatibility.** `qiskit-ibm-transpiler` 0.13.0 declares no upper bound on qiskit yet imports a module qiskit 2.5 removed, so the resolver happily produced a broken environment. Run the notebooks after any resolution; never trust metadata alone.
+- **The Qiskit stack states floors, not exact versions; `uv.lock` is what pins.** Build tooling (`jupyter-book`, `pylatexenc`) keeps exact pins. Every cap in `pyproject.toml` carries its reason in a comment — never lift one without reading it.
+- **`qiskit-ibm-transpiler` is not in the default install.** It pulls torch and the CUDA toolkit through `qiskit-gym`, and its only consumer is the AI transpiler Lab. `uv sync --group ai-transpiler` when you need it.
 - **IBM Quantum credentials.** Some Labs need an IBM Quantum API token, read from a root `.env` (see `.env.sample`: `QXToken`, `QXInstance`) via `python-dotenv`. Never commit real tokens.
 - When adding a Lab: place the `.ipynb` in `src/`, put assets in `src/resources/`, register it in `src/myst.yml`'s `toc` with a title, and give it a group in `scripts/notebooks.txt` — the toc publishes it, the manifest gets it run, and `run-notebooks.py` fails until both agree.

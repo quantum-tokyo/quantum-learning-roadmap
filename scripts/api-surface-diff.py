@@ -48,10 +48,26 @@ def dump(package: str) -> dict:
     warnings.simplefilter("ignore")
     modules: dict[str, dict] = {}
 
-    try:
-        root = importlib.import_module(package)
-    except Exception as exc:  # noqa: BLE001 - report rather than crash
-        return {"package": package, "version": None, "error": f"{type(exc).__name__}: {exc}"}
+    # A distribution name and its import name differ often enough to matter:
+    # `qiskit-aer` installs from that name but imports as `qiskit_aer`. Passing the
+    # hyphenated form used to yield a dump holding only an error, which compared
+    # as "nothing changed" and exited 0 -- the exact silent false-clean this
+    # script exists to prevent.
+    candidates = [package.replace("-", "_"), package] if "-" in package else [package]
+    root, failure = None, None
+    for candidate in candidates:
+        try:
+            root = importlib.import_module(candidate)
+            package = candidate
+            break
+        except Exception as exc:  # noqa: BLE001 - report rather than crash
+            failure = exc
+    if root is None:
+        return {
+            "package": package,
+            "version": None,
+            "error": f"{type(failure).__name__}: {failure}",
+        }
 
     names = [package]
     if hasattr(root, "__path__"):
@@ -194,6 +210,17 @@ def main() -> int:
 
     old = dump_version(args.package, args.old)
     new = dump_version(args.package, args.new)
+
+    # Refuse to report on a dump that holds only an import error. Comparing one
+    # produces "no removals" and exit 0, which reads as a clean bill of health.
+    for side, dumped in (("--old", old), ("--new", new)):
+        if dumped.get("error"):
+            sys.exit(
+                f"could not import {args.package!r} on the {side} side:"
+                f" {dumped['error']}\n"
+                "  Pass the import name rather than the distribution name"
+                " (qiskit_aer, not qiskit-aer)."
+            )
 
     diff = compare(old, new)
     if args.json:
