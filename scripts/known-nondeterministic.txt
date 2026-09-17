@@ -1,0 +1,13 @@
+# Notebooks whose regenerated output is not byte-identical every time, where the
+# cause has been looked for and not found.
+#
+# --check-idempotent fails on any notebook that moves between two regenerations,
+# unless it is listed here. A reason is required: "it moves sometimes" is not a
+# reason, what was ruled out is.
+#
+# An entry that never moves across a run's rounds is reported as stale -- either
+# the cause went away and the line should go, or the rounds were too few.
+#
+# format:  <notebook>  <what was ruled out, and what is still unknown>
+
+2024-spring-lab1-qiskit10-ja-part2.ipynb  Moves in about half to all of the rounds measured, and only inside a full-group run: on its own it was identical three times over. Ruled out: thread count (1 vs 8 give identical output), the ipykernel temp path, any time or elapsed value in the code, and an ineffective seed (seed_simulator=12345 reproduces exactly, unseeded does not). Cause unknown; it is somewhere in EstimatorV2 under a Session in local testing mode.

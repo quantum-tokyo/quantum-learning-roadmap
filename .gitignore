@@ -1,3 +1,7 @@
+### Claude Code ###
+# Per-machine permission decisions; the skills alongside it are shared.
+.claude/settings.local.json
+
 ### Custom ### 
 _build/
 Untitled*

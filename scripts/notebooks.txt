@@ -26,7 +26,7 @@ local           2021-spring-lab3-error-ja.ipynb
 local           2023-spring-lab4-error-correction.ipynb
 local           2024-spring-lab1-qiskit10-ja-part1.ipynb
 local           2022-autumn-lab1-runtime-ja.ipynb
-local           2024-spring-lab1-qiskit10-ja-part2.ipynb
+local           2024-spring-lab1-qiskit10-ja-part2.ipynb  # regenerates non-deterministically about half the time; see known-nondeterministic.txt
 local           2023-spring-lab1-dynamic-ja.ipynb
 local           2024-spring-lab2-transpilation-ja.ipynb
 
