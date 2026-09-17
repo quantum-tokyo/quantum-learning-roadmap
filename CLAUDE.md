@@ -21,6 +21,7 @@ uv run python scripts/run-notebooks.py --group local   # execute the Labs that w
 uv run python scripts/run-notebooks.py --list          # see the groups (local / hardware / known-broken)
 
 uv run python scripts/api-surface-diff.py qiskit --old 2.0.3        # what a version change removed
+#   run this for every package the lock moved, not only qiskit
 uv run python scripts/compare-notebook-outputs.py --base <ref>      # did the outputs change, and how
 uv run python scripts/run-notebooks.py --group local --check-idempotent
 uv run python scripts/run-notebooks.py --group local --warnings-report
