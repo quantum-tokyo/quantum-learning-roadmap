@@ -8,11 +8,13 @@ dependencies = [
     "matplotlib>=3.11.0",
     "pylatexenc==2.10",
     "python-dotenv==1.0.1",
-    "qiskit-addon-cutting==0.10.0",
-    "qiskit-aer==0.17.2",
-    "qiskit-ibm-runtime==0.40.1",
-    "qiskit-ibm-transpiler==0.13.0",
-    "qiskit[visualization]==2.0.3",
+    "qiskit-addon-cutting>=0.10.0",
+    "qiskit-aer>=0.17.2",
+    "qiskit-ibm-runtime>=0.40.1",
+    # Capped below 2.5: qiskit 2.5.0 added qiskit.visualization.__all__ with a
+    # "draw" entry that does not resolve, so `from qiskit.visualization import *`
+    # raises. Lift the cap once that is fixed upstream.
+    "qiskit[visualization]>=2.4,<2.5",
 ]
 
 [dependency-groups]
@@ -22,4 +24,10 @@ dev = [
     "nbclient>=0.10",
     # run-notebooks.py reads src/myst.yml's toc to check the manifest against it.
     "pyyaml>=6",
+]
+# Only 2024-spring-lab3-ai-transpiler-ja.ipynb needs this, and only with an IBM
+# Quantum account. It drags in torch and the CUDA toolkit via qiskit-gym, so it
+# stays out of the default sync: `uv sync --group ai-transpiler`.
+ai-transpiler = [
+    "qiskit-ibm-transpiler>=0.14",
 ]
