@@ -9,10 +9,10 @@ dependencies = [
     "pylatexenc==2.10",
     "python-dotenv==1.0.1",
     "qiskit-addon-cutting==0.10.0",
-    "qiskit-aer==0.17.2",
-    "qiskit-ibm-runtime==0.40.1",
-    "qiskit-ibm-transpiler==0.13.0",
-    "qiskit[visualization]==2.0.3",
+    "qiskit-aer==0.18.0",
+    "qiskit-ibm-runtime==0.50.0",
+    "qiskit-ibm-transpiler==0.14.2",
+    "qiskit[visualization]==2.4.2",
 ]
 
 [dependency-groups]
