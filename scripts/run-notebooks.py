@@ -242,6 +242,11 @@ def run_notebook(entry: Entry, timeout: int, warnings_as_errors: bool, save_outp
     return Result(entry, ok=True, seconds=time.monotonic() - started, skipped_cells=skipped)
 
 
+# A warning printed to stderr names the cell as <tmpdir>/ipykernel_<pid>/<hash>.py,
+# which differs on every run and on every machine. Collapse it to one form.
+KERNEL_SCRIPT = re.compile(r"\S*/ipykernel_\d+/\d+\.py")
+
+
 def coalesce_streams(outputs: list) -> list:
     """Merge adjacent stream outputs, the way Jupyter renders them anyway.
 
@@ -255,6 +260,8 @@ def coalesce_streams(outputs: list) -> list:
         text = output.get("text")
         if isinstance(text, list):
             text = "".join(text)
+        if isinstance(text, str):
+            text = KERNEL_SCRIPT.sub("<kernel>", text)
         previous = merged[-1] if merged else None
         if (
             output.get("output_type") == "stream"
@@ -265,7 +272,8 @@ def coalesce_streams(outputs: list) -> list:
             previous["text"] = previous["text"] + text
             continue
         if text is not None:
-            output = dict(output, text=text)
+            # Keep it a NotebookNode: nbformat.write reads output.output_type.
+            output = nbformat.NotebookNode(dict(output, text=text))
         merged.append(output)
     return merged
 
