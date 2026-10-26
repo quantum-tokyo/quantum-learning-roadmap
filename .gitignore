@@ -11,6 +11,10 @@ untitled*
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
+# jupyter-collaboration session state (written wherever the server is started)
+.jupyter/
+.jupyter_ystore.db
+
 # IPython
 profile_default/
 ipython_config.py

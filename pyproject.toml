@@ -23,3 +23,9 @@ dev = [
     # run-notebooks.py reads src/myst.yml's toc to check the manifest against it.
     "pyyaml>=6",
 ]
+# Only for editing notebooks through the Jupyter MCP server, which talks to
+# /api/collaboration/session. Not in `dev` so CI's `uv sync` does not install it;
+# opt in with `uv sync --group authoring`.
+authoring = [
+    "jupyter-collaboration>=5.0.4",
+]

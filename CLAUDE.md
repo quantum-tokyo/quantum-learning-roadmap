@@ -14,8 +14,9 @@ Uses [uv](https://docs.astral.sh/uv/) for dependency and Python management (Pyth
 
 ```bash
 uv sync                 # install deps (uv provisions Python too); use --frozen in CI
+uv sync --group authoring   # also install jupyter-collaboration, needed to edit notebooks via the Jupyter MCP server
 uv run jupyter lab      # open notebooks to run/edit hands-on
-./scripts/build.sh      # build the site locally -> src/_build/html
+uv run bash scripts/build.sh   # build the site locally -> src/_build/html (the script is not executable and calls bare `jupyter`, so run it under uv)
 
 uv run python scripts/run-notebooks.py --group local   # execute the Labs that work offline
 uv run python scripts/run-notebooks.py --list          # see the groups (local / hardware / known-broken)
@@ -24,6 +25,8 @@ uv run python scripts/run-notebooks.py --list          # see the groups (local /
 `uv sync` is not quite enough to run every Lab: the transpilation Lab draws coupling maps, and qiskit's `plot_coupling_map` needs the **Graphviz binaries** (`dot`). The `graphviz` entry in `pyproject.toml` is only the Python binding — install Graphviz itself (`brew install graphviz`, `apt-get install graphviz`), which is what `.github/workflows/run-notebooks.yml` does.
 
 `scripts/build.sh` exists because the MyST build must run from the directory containing the project `myst.yml` — it `cd`s into `src/` and runs `jupyter book build --html`. Do not run the build from the repo root; the root `myst.yml` is a stub and the real project config is `src/myst.yml`.
+
+`jupyter-collaboration` lives in its own `authoring` group so CI's `uv sync` does not install it. A plain `uv sync` therefore **removes** it from your environment: re-run `uv sync --group authoring` afterwards, and restart the Jupyter server, or the MCP server's cell edits fail with a 404 on `/api/collaboration/session/...`. Start Jupyter from the repo root; the MCP server resolves notebook paths relative to wherever the server was started, so a server started in `src/` needs `ch02-grover.ipynb` instead of `src/ch02-grover.ipynb`.
 
 There is no linter. Verification = the notebooks execute cleanly and the site builds.
 
