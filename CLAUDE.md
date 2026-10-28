@@ -53,4 +53,35 @@ There is no linter. Verification = the notebooks execute cleanly and the site bu
 - **Diagram style.** Give the SVG its own background panel (`#f6f7f9`, 1px `#c9ced6` border, rounded) and fixed colors so it reads on both the light and dark site themes; `prefers-color-scheme` does not reach an `<img>`. Use system fonts including `Hiragino Sans` / `Noto Sans JP`; labels and captions are Japanese. Keep one idea per figure and put the explanation in the text, not in the picture. A figure may only use words the reader has already met in the text above it. Do not copy English slide art (e.g. the old `2020-w1-b-*.png`); redraw it. Palette: green `#2f6f4f` for "+" and red `#c2362b` for "−"/the mean line, amber `#e0a800` for the winning item, greys for everything else. Check that captions fit inside the panel and that arrows do not cross boxes or text.
 - **Generate numbers, don't type them.** When a figure shows quantities (amplitudes, probabilities), compute them with a script and write them into the SVG, and make the surrounding text agree with the computed values; the stored outputs and the figure must tell the same story. Check a figure by rendering it (headless Chrome screenshot of the built page), not by reading the SVG source.
 - **IBM Quantum credentials.** Some Labs need an IBM Quantum API token, read from a root `.env` (see `.env.sample`: `QXToken`, `QXInstance`) via `python-dotenv`. Never commit real tokens.
+- **End every new notebook with a version cell.** The last code cell lists the Qiskit packages the notebook itself imports (not ones pulled in indirectly), plus Python as `major.minor`. Put the code inline, not in a `src/utils/` helper: a notebook downloaded on its own would fail on `from utils... import`, and this cell is bookkeeping, not something the reader should depend on a second file for. Use exactly this cell (preceded by a `## 実行環境` heading):
+
+  ```python
+  import ast
+  import platform
+  from importlib.metadata import packages_distributions, version
+
+  # このノートブックが import している Qiskit 系のパッケージだけを表示する
+  used = set()
+  for source in In:
+      try:
+          nodes = ast.walk(ast.parse(source))
+      except SyntaxError:  # ! や % で始まるセルは読み飛ばす
+          continue
+      for node in nodes:
+          if isinstance(node, ast.Import):
+              tops = [a.name.split(".")[0] for a in node.names]
+          elif isinstance(node, ast.ImportFrom) and node.level == 0:
+              tops = [node.module.split(".")[0]]
+          else:
+              continue
+          for top in tops:
+              if top.startswith("qiskit"):
+                  used.update(packages_distributions().get(top, []))
+
+  print(f"{'python':<24} {'.'.join(platform.python_version().split('.')[:2])}")
+  for name in sorted(used):
+      print(f"{name:<24} {version(name)}")
+  ```
+
+  It relies on `In`, which only exists under IPython/ipykernel, and only sees cells that have already run, so it belongs after everything else. Its output is stable under `--save-outputs` (checked: two runs are byte-identical), so it needs no entry in `ENVIRONMENT_CELL`. It deliberately does not print numpy/matplotlib/etc.; their versions are fixed by `uv.lock`, not by the notebook.
 - When adding a Lab: place the `.ipynb` in `src/`, put assets in `src/resources/`, register it in `src/myst.yml`'s `toc` with a title, and give it a group in `scripts/notebooks.txt` — the toc publishes it, the manifest gets it run, and `run-notebooks.py` fails until both agree.
