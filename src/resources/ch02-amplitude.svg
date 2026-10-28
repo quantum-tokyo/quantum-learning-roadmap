@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" role="img" aria-label="Groverの1回の繰り返しで、当たりの振幅が大きくなる様子。最初はどの箱も同じ振幅。オラクルで当たりだけが負になり、拡散操作で当たりの振幅が大きく伸びる。">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6573"/></marker>
+    <style>
+      text { font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; fill: #1d2430; }
+      .ttl { font-size: 14px; font-weight: 600; }
+      .cap { font-size: 12px; fill: #5b6573; }
+      .ax { stroke: #8a93a0; stroke-width: 1.2; }
+      .bar { fill: #7d8794; }
+      .win { fill: #e0a800; stroke: #8a6a00; stroke-width: 1; }
+      .mean { stroke: #c2362b; stroke-width: 1.4; stroke-dasharray: 4 3; }
+      .meanl { font-size: 11px; fill: #c2362b; }
+      .lab { font-size: 11px; fill: #5b6573; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="720" height="320" rx="10" fill="#f6f7f9" stroke="#c9ced6"/>
+  <text class="ttl" x="35" y="30">① 最初</text>
+  <line class="ax" x1="35" y1="150" x2="225" y2="150"/>
+  <rect class="bar" x="39.5" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="63.3" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="87.0" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="110.8" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="134.5" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="158.3" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="182.0" y="118.2" width="14.7" height="31.8"/>
+  <rect class="win" x="205.8" y="118.2" width="14.7" height="31.8"/>
+  <line class="mean" x1="35" y1="118.2" x2="225" y2="118.2"/>
+  <text class="meanl" x="35" y="104.2">平均</text>
+  <text class="lab" x="213.1" y="165" text-anchor="middle">当たり</text>
+  <text class="cap" x="35" y="212">どの箱も同じ振幅</text>
+  <text class="ttl" x="265" y="30">② オラクル</text>
+  <line class="ax" x1="265" y1="150" x2="455" y2="150"/>
+  <rect class="bar" x="269.5" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="293.3" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="317.0" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="340.8" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="364.5" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="388.3" y="118.2" width="14.7" height="31.8"/>
+  <rect class="bar" x="412.0" y="118.2" width="14.7" height="31.8"/>
+  <rect class="win" x="435.8" y="150.0" width="14.7" height="31.8"/>
+  <line class="mean" x1="265" y1="126.1" x2="455" y2="126.1"/>
+  <text class="meanl" x="265" y="112.1">平均</text>
+  <text class="lab" x="443.1" y="197" text-anchor="middle">当たり</text>
+  <text class="cap" x="265" y="212">当たりだけ符号が反転</text>
+  <text class="cap" x="265" y="228">平均が少し下がる</text>
+  <text class="ttl" x="495" y="30">③ 拡散操作</text>
+  <line class="ax" x1="495" y1="150" x2="685" y2="150"/>
+  <rect class="bar" x="499.5" y="134.1" width="14.7" height="15.9"/>
+  <rect class="bar" x="523.3" y="134.1" width="14.7" height="15.9"/>
+  <rect class="bar" x="547.0" y="134.1" width="14.7" height="15.9"/>
+  <rect class="bar" x="570.8" y="134.1" width="14.7" height="15.9"/>
+  <rect class="bar" x="594.5" y="134.1" width="14.7" height="15.9"/>
+  <rect class="bar" x="618.3" y="134.1" width="14.7" height="15.9"/>
+  <rect class="bar" x="642.0" y="134.1" width="14.7" height="15.9"/>
+  <rect class="win" x="665.8" y="70.5" width="14.7" height="79.5"/>
+  <line class="mean" x1="495" y1="126.1" x2="685" y2="126.1"/>
+  <text class="meanl" x="495" y="112.1">平均</text>
+  <text class="lab" x="673.1" y="165" text-anchor="middle">当たり</text>
+  <text class="cap" x="495" y="212">平均を軸に振幅を反転</text>
+  <text class="cap" x="495" y="228">当たりが大きく伸びる</text>
+  <path d="M231 120 L259 120" stroke="#5b6573" stroke-width="1.5" fill="none" marker-end="url(#ah)"/>
+  <path d="M461 120 L489 120" stroke="#5b6573" stroke-width="1.5" fill="none" marker-end="url(#ah)"/>
+  <text class="cap" x="35" y="298">箱が8個(N=8)の場合。棒の高さが振幅、黄色が当たり。確率は振幅の2乗で、③の当たりは約78%。</text>
+</svg>

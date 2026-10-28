@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" role="img" aria-label="箱が16個のGroverの探索で、繰り返しの回数と当たりを引く確率の関係。3回で約96%と最大になり、4回で約58%に下がり、6回で約2%まで下がったあと、9回で再び約99%に上がる。">
+  <defs><style>
+    text { font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; fill: #1d2430; }
+    .ttl { font-size: 14px; font-weight: 600; }
+    .tick { font-size: 11px; fill: #5b6573; }
+    .axl { font-size: 12px; fill: #5b6573; }
+    .grid { stroke: #e1e4e9; stroke-width: 1; }
+    .axis { stroke: #8a93a0; stroke-width: 1.2; }
+    .cap { font-size: 12px; fill: #5b6573; }
+    .lbl { font-size: 12px; font-weight: 600; }
+  </style></defs>
+  <rect x="0" y="0" width="720" height="380" rx="10" fill="#f6f7f9" stroke="#c9ced6"/>
+  <text class="ttl" x="64" y="30">繰り返しの回数と、当たりを引く確率(理論値)</text>
+  <line class="grid" x1="64" y1="304.0" x2="530" y2="304.0"/>
+  <text class="tick" x="56" y="308.0" text-anchor="end">0%</text>
+  <line class="grid" x1="64" y1="242.0" x2="530" y2="242.0"/>
+  <text class="tick" x="56" y="246.0" text-anchor="end">25%</text>
+  <line class="grid" x1="64" y1="180.0" x2="530" y2="180.0"/>
+  <text class="tick" x="56" y="184.0" text-anchor="end">50%</text>
+  <line class="grid" x1="64" y1="118.0" x2="530" y2="118.0"/>
+  <text class="tick" x="56" y="122.0" text-anchor="end">75%</text>
+  <line class="grid" x1="64" y1="56.0" x2="530" y2="56.0"/>
+  <text class="tick" x="56" y="60.0" text-anchor="end">100%</text>
+  <line class="axis" x1="64" y1="304.0" x2="530" y2="304.0"/>
+  <text class="tick" x="64.0" y="322.0" text-anchor="middle">0</text>
+  <text class="tick" x="141.7" y="322.0" text-anchor="middle">2</text>
+  <text class="tick" x="219.3" y="322.0" text-anchor="middle">4</text>
+  <text class="tick" x="297.0" y="322.0" text-anchor="middle">6</text>
+  <text class="tick" x="374.7" y="322.0" text-anchor="middle">8</text>
+  <text class="tick" x="452.3" y="322.0" text-anchor="middle">10</text>
+  <text class="tick" x="530.0" y="322.0" text-anchor="middle">12</text>
+  <text class="axl" x="297" y="342" text-anchor="middle">繰り返しの回数</text>
+  <polyline points="64.0,242.0 102.8,56.0 141.7,242.0 180.5,242.0 219.3,56.0 258.2,242.0 297.0,242.0 335.8,56.0 374.7,242.0 413.5,242.0 452.3,56.0 491.2,242.0 530.0,242.0" fill="none" stroke="#b4bac3" stroke-width="1.5" stroke-dasharray="5 4" stroke-linejoin="round"/>
+  <polyline points="64.0,273.0 102.8,110.3 141.7,69.6 180.5,222.1 219.3,301.0 258.2,168.1 297.0,56.1 335.8,160.9 374.7,299.2 413.5,228.9 452.3,73.0 491.2,104.4 530.0,268.0" fill="none" stroke="#8a93a0" stroke-width="1.6" stroke-dasharray="2 3" stroke-linejoin="round"/>
+  <polyline points="64.0,288.5 102.8,186.8 141.7,78.7 180.5,65.6 219.3,159.7 258.2,272.9 297.0,298.9 335.8,213.5 374.7,96.6 413.5,57.9 452.3,133.7 491.2,252.8 530.0,303.7" fill="none" stroke="#c2362b" stroke-width="2.4" stroke-linejoin="round"/>
+  <circle cx="64.0" cy="288.5" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="102.8" cy="186.8" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="141.7" cy="78.7" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="180.5" cy="65.6" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="219.3" cy="159.7" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="258.2" cy="272.9" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="297.0" cy="298.9" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="335.8" cy="213.5" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="374.7" cy="96.6" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="413.5" cy="57.9" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="452.3" cy="133.7" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="491.2" cy="252.8" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="530.0" cy="303.7" r="3" fill="#c2362b" stroke="#f6f7f9" stroke-width="1.5"/>
+  <circle cx="180.5" cy="65.6" r="7" fill="none" stroke="#e0a800" stroke-width="2.4"/>
+  <text class="lbl" x="192.5" y="61.6" text-anchor="start" style="fill:#8a6a00">3回(最適): 96%</text>
+  <text class="lbl" x="229.3" y="163.7" text-anchor="start" style="fill:#c2362b">4回: 58%</text>
+  <text class="lbl" x="309.0" y="290.9" text-anchor="start" style="fill:#c2362b">6回: 2%</text>
+  <text class="lbl" x="413.5" y="45.9" text-anchor="middle" style="fill:#c2362b">9回: 99%</text>
+  <line x1="552" y1="62" x2="582" y2="62" stroke="#c2362b" stroke-width="2.4"/>
+  <text class="lbl" x="590" y="66">箱が16個</text>
+  <line x1="552" y1="84" x2="582" y2="84" stroke="#8a93a0" stroke-width="1.6" stroke-dasharray="2 3"/>
+  <text class="lbl" x="590" y="88">箱が8個</text>
+  <line x1="552" y1="106" x2="582" y2="106" stroke="#b4bac3" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="lbl" x="590" y="110">箱が4個</text>
+  <text class="cap" x="64" y="366">最適な回数を超えると確率は下がり、さらに繰り返すと再び上がる。</text>
+</svg>

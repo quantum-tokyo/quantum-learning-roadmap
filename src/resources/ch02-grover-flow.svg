@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 230" role="img" aria-label="Groverのアルゴリズムの流れ。全ての箱を重ね合わせにしたあと、オラクルと拡散操作の組を約√N回繰り返し、最後に測定する。">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6573"/></marker>
+    <style>
+      text { font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; fill: #1d2430; }
+      .name { font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .sub { font-size: 11.5px; fill: #5b6573; text-anchor: middle; }
+      .cap { font-size: 12.5px; fill: #5b6573; }
+      .step { font-size: 12px; fill: #5b6573; }
+      .b-init { fill: #cfe0ff; stroke: #5b84c4; stroke-width: 1.5; }
+      .b-orc  { fill: #ffe39a; stroke: #c99400; stroke-width: 1.5; }
+      .b-dif  { fill: #d6dbe2; stroke: #7d8794; stroke-width: 1.5; }
+      .b-meas { fill: #ffd0ec; stroke: #c25d9d; stroke-width: 1.5; }
+      .loop { fill: none; stroke: #7d8794; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .arrow { stroke: #5b6573; stroke-width: 1.5; fill: none; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="720" height="230" rx="10" fill="#f6f7f9" stroke="#c9ced6"/>
+
+  <rect class="b-init" x="24" y="70" width="132" height="64" rx="8"/>
+  <text class="name" x="90" y="98">全部の箱を</text>
+  <text class="name" x="90" y="116">重ね合わせにする</text>
+
+  <path class="arrow" d="M156 102 L204 102" marker-end="url(#ah)"/>
+
+  <rect class="loop" x="208" y="38" width="318" height="128" rx="10"/>
+  <rect class="b-orc" x="224" y="70" width="128" height="64" rx="8"/>
+  <text class="name" x="288" y="98">オラクル</text>
+  <text class="sub" x="288" y="118">当たりに「－」をつける</text>
+
+  <path class="arrow" d="M352 102 L384 102" marker-end="url(#ah)"/>
+
+  <rect class="b-dif" x="388" y="70" width="128" height="64" rx="8"/>
+  <text class="name" x="452" y="98">拡散操作</text>
+  <text class="sub" x="452" y="118">当たりの振幅を伸ばす</text>
+
+  <text class="step" x="367" y="188" text-anchor="middle">この2つの組を、約 √N 回くり返す</text>
+
+  <path class="arrow" d="M526 102 L564 102" marker-end="url(#ah)"/>
+
+  <rect class="b-meas" x="568" y="70" width="128" height="64" rx="8"/>
+  <text class="name" x="632" y="98">測定</text>
+  <text class="sub" x="632" y="118">1つの結果が得られる</text>
+
+  <text class="cap" x="24" y="30">Groverのアルゴリズムの流れ</text>
+  <text class="cap" x="24" y="214">N個の箱なら、くり返しは約 √N 回。ほぼ確実に当たりが得られる。</text>
+</svg>

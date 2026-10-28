@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" role="img" aria-label="オラクルは当たりの箱の符号だけを、プラスからマイナスに反転する。ほかの箱は変わらない。">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6573"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; fill: #1d2430; }
+      .lbl { font-size: 14px; font-weight: 600; }
+      .cap { font-size: 13px; fill: #5b6573; }
+      .num { font-size: 12px; }
+      .sign { font-size: 20px; font-weight: 700; }
+      .pos { fill: #2f6f4f; }
+      .neg { fill: #c2362b; }
+      .box { fill: #dfe3e9; stroke: #9aa3af; stroke-width: 1.5; }
+      .win { fill: #fff1c2; stroke: #d19a00; stroke-width: 2; }
+      .gate { fill: #ffffff; stroke: #5b6573; stroke-width: 1.5; }
+      .arrow { stroke: #5b6573; stroke-width: 1.5; fill: none; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="640" height="300" rx="10" fill="#f6f7f9" stroke="#c9ced6"/>
+
+  <text class="lbl" x="24" y="30">オラクルに通す前</text>
+  <rect class="box" x="24"  y="42" width="64" height="44" rx="6"/><text class="num" x="56"  y="60" text-anchor="middle">箱 00</text><text class="sign pos" x="56"  y="80" text-anchor="middle">＋</text>
+  <rect class="box" x="104" y="42" width="64" height="44" rx="6"/><text class="num" x="136" y="60" text-anchor="middle">箱 01</text><text class="sign pos" x="136" y="80" text-anchor="middle">＋</text>
+  <rect class="box" x="184" y="42" width="64" height="44" rx="6"/><text class="num" x="216" y="60" text-anchor="middle">箱 10</text><text class="sign pos" x="216" y="80" text-anchor="middle">＋</text>
+  <rect class="win" x="264" y="42" width="64" height="44" rx="6"/><text class="num" x="296" y="60" text-anchor="middle">箱 11</text><text class="sign pos" x="296" y="80" text-anchor="middle">＋</text>
+  <text class="cap" x="24" y="106">すべて同じ符号(＋)。どれが当たりか、外からは分からない</text>
+
+  <path class="arrow" d="M176 116 L176 134" marker-end="url(#arrowhead)"/>
+  <rect class="gate" x="116" y="138" width="120" height="30" rx="6"/>
+  <text class="lbl" x="176" y="158" text-anchor="middle">オラクル</text>
+  <path class="arrow" d="M176 168 L176 186" marker-end="url(#arrowhead)"/>
+
+  <text class="lbl" x="24" y="208">オラクルに通した後</text>
+  <rect class="box" x="24"  y="220" width="64" height="44" rx="6"/><text class="num" x="56"  y="238" text-anchor="middle">箱 00</text><text class="sign pos" x="56"  y="258" text-anchor="middle">＋</text>
+  <rect class="box" x="104" y="220" width="64" height="44" rx="6"/><text class="num" x="136" y="238" text-anchor="middle">箱 01</text><text class="sign pos" x="136" y="258" text-anchor="middle">＋</text>
+  <rect class="box" x="184" y="220" width="64" height="44" rx="6"/><text class="num" x="216" y="238" text-anchor="middle">箱 10</text><text class="sign pos" x="216" y="258" text-anchor="middle">＋</text>
+  <rect class="win" x="264" y="220" width="64" height="44" rx="6"/><text class="num" x="296" y="238" text-anchor="middle">箱 11</text><text class="sign neg" x="296" y="258" text-anchor="middle">－</text>
+  <text class="cap" x="24" y="284">当たりの箱だけが「－」になる。ほかは何も変わらない</text>
+</svg>
