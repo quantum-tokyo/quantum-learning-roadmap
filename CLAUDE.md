@@ -26,7 +26,7 @@ uv run python scripts/run-notebooks.py --list          # see the groups (local /
 
 `scripts/build.sh` exists because the MyST build must run from the directory containing the project `myst.yml` — it `cd`s into `src/` and runs `jupyter book build --html`. Do not run the build from the repo root; the root `myst.yml` is a stub and the real project config is `src/myst.yml`.
 
-`jupyter-collaboration` lives in its own `authoring` group so CI's `uv sync` does not install it. A plain `uv sync` therefore **removes** it from your environment: re-run `uv sync --group authoring` afterwards, and restart the Jupyter server, or the MCP server's cell edits fail with a 404 on `/api/collaboration/session/...`. Start Jupyter from the repo root; the MCP server resolves notebook paths relative to wherever the server was started, so a server started in `src/` needs `ch02-grover.ipynb` instead of `src/ch02-grover.ipynb`.
+`jupyter-collaboration` lives in its own `authoring` group so CI's `uv sync` does not install it. A plain `uv sync` therefore **removes** it from your environment: re-run `uv sync --group authoring` afterwards, and restart the Jupyter server, or the MCP server's cell edits fail with a 404 on `/api/collaboration/session/...`. Start Jupyter from the repo root; the MCP server resolves notebook paths relative to wherever the server was started, so a server started in `src/` needs `ch03-strengths-and-limits.ipynb` instead of `src/ch03-strengths-and-limits.ipynb`.
 
 There is no linter. Verification = the notebooks execute cleanly and the site builds.
 
