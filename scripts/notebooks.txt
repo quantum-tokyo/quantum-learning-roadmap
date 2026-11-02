@@ -14,6 +14,7 @@
 #
 # format:  <group>  <notebook>   # note
 
+local           ch03-strengths-and-limits.ipynb
 local           2024-spring-lab0-welcome-ja.ipynb
 local           2020-w1-a-adder-ja.ipynb
 local           2021-spring-lab1-toffoli.ipynb
