@@ -6,8 +6,6 @@ project:
   github: quantum-tokyo/quantum-learning-roadmap
   toc:
     - file: intro.md
-    - file: learning-roadmap.md
-      title: 学習ロードマップ
     - title: Qiskitで学ぶ量子コンピューティング
       children:
         - file: ch03-strengths-and-limits.ipynb
