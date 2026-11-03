@@ -36,7 +36,7 @@ There is no linter. Verification = the notebooks execute cleanly and the site bu
 
 ## Architecture / structure
 
-- **Two `myst.yml` files.** Root `myst.yml` is a near-empty MyST stub. The one that matters is `src/myst.yml` — it defines the site title, logo, and the **`toc:`** (table of contents) that determines which notebooks appear on the site and their display titles/chapter grouping (Chapter 0–3 + Chapter X). **A new Lab is not published until it is added to `src/myst.yml`'s `toc`.**
+- **Two `myst.yml` files.** Root `myst.yml` is a near-empty MyST stub. The one that matters is `src/myst.yml` — it defines the site title, logo, and the **`toc:`** (table of contents) that determines which notebooks appear on the site and their display titles/grouping (two groups: 「Qiskitで学ぶ量子コンピューティング」 for the new chapters, 「過去のQuantum Challenge」 for the existing Labs, which sit directly under it with no sub-chapters). **A new Lab is not published until it is added to `src/myst.yml`'s `toc`.**
 - **`src/*.ipynb`** — the Labs. Notebook filenames follow `YYYY-season-labN-topic[-ja].ipynb` (e.g. `2023-spring-lab3-iqpe.ipynb`); `-ja` marks Japanese-translated content. Files with a **`_bk` suffix** (e.g. `2020-w3-false-asteroids_bk.ipynb`) are backups/archived and are intentionally NOT in the toc — leave them out unless explicitly asked.
 - **`src/intro.md`, `src/learning-roadmap.md`** — the landing/intro pages.
 - **`src/resources/`** — images and data assets referenced from notebooks/markdown by relative path.
