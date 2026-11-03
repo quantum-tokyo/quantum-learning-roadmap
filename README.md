@@ -3,7 +3,8 @@
 [![Deploy Book](https://github.com/quantum-tokyo/quantum-learning-roadmap/actions/workflows/deploy-book.yml/badge.svg)](https://github.com/quantum-tokyo/quantum-learning-roadmap/actions/workflows/deploy-book.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE.md)
 
-[Quantum Tokyo](https://github.com/quantum-tokyo) コミュニティが作成した、量子コンピューティングの学習教材です。学習ロードマップに沿って、IBM Quantum Challenge の過去問題をはじめとするさまざまなリソースを題材に、Qiskit を使いながら量子コンピューティングの基礎から応用までを段階的に学べます。
+Quantum Tokyo コミュニティが作成した、量子コンピューティングの学習教材です。これから量子コンピューターを活用する技術者向けに、
+Qiskitフレームワークを実行しながら学べる構成となっています。順次公開しており、過去定期的に開催された学習イベントである IBM Quantum Challenge の問題も収録しています。
 
 ![](./src/resources/ibm-quantum-challenge.png)
 
@@ -18,18 +19,6 @@
 ## この教材について
 
 - **対象**: 量子コンピューティングをこれから学ぶ方、Qiskit を触ってみたい方
-
-### 収録コンテンツ
-
-現在は IBM Quantum Challenge の過去問題を中心に、以下の章立てで学習コンテンツを提供しています。今後、学習ロードマップに沿って他のリソースを基にしたコンテンツも追加予定です。
-
-| 章 | テーマ |
-|---|---|
-| Chapter 0 | イントロダクション（ハローワールド） |
-| Chapter 1 | 量子回路の構築（加算器・テレポーテーション・Grover・量子位相推定 ほか） |
-| Chapter 2 | 量子コンピューターの応用（Shor のアルゴリズム・量子機械学習） |
-| Chapter 3 | エラー訂正・緩和（量子エラー訂正・実機上での VQC） |
-| Chapter X | Qiskit を学ぶ（Runtime・Transpiler・Dynamic Circuits・Circuit Knitting ほか） |
 
 ## ローカルで動かす
 
@@ -53,8 +42,6 @@ uv run jupyter lab
 ```
 QXToken=<あなたの API トークン>
 ```
-
-> 詳しい手順は教材サイトの [イントロダクション](https://quantum-tokyo.github.io/quantum-learning-roadmap/) を参照してください。
 
 ## コントリビューション
 

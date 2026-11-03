@@ -9,21 +9,6 @@ IBM Quantum Challenge は2019年から IBM 主催で開催されている量子�
 
 ![](./resources/group-working.png)
 
-## Labを始める前に
-一部のLabでは実行するにあたってIBM QuantumのAPIトークンを必要とするものがあります。  
-自分でハンズオンを進めたい方は以下の手順に沿ってAPIトークン情報の配置を行ってください。
-
-![APIトークンの取得](./resources/ibmq_get_apitoken.png)
-
-1.   [IBM Quantum Platform](https://quantum.ibm.com/)に移動します。
-1.   右上にある API トークン (上の図参照) をクリックしてコピーします。
-1.   このプロジェクトのルートディレクトリの配下に`.env`ファイルを作成します。
-1.   `.env.sample`を参考に、3でコピーしたAPI トークンを`QXToken`の値に貼り付けます。
-
-```
-QXToken=[.envを作成し、ここにAPIトークンを貼り付けます]
-```
-
 ## 過去の IBM Quantum Challenge一覧
 
 - [2019年](https://github.com/quantum-challenge/2019#ibm-quantum-challenge%E3%81%B8%E3%82%88%E3%81%86%E3%81%93%E3%81%9D)(全notebook和訳あり)
