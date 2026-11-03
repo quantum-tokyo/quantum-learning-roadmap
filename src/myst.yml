@@ -8,6 +8,8 @@ project:
     - file: intro.md
     - title: Qiskitで学ぶ量子コンピューティング
       children:
+        - file: ch02-basics.ipynb
+          title: 第2章 量子コンピューターの基礎
         - file: ch03-strengths-and-limits.ipynb
           title: 第3章 量子計算の利点と制約
     - title: 過去のQuantum Challenge

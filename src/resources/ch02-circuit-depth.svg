@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 312" width="800" height="312" role="img" aria-label="独立に H をかけた回路は2つのゲートが1段に並び、H と CNOT の回路は2段に並ぶ">
+<rect x="0.5" y="0.5" width="799" height="311" rx="10" fill="#f6f7f9" stroke="#c9ced6"/>
+<g font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',sans-serif">
+<text x="40" y="52" font-size="17" font-weight="700" fill="#333a45">独立に H をかけた回路</text>
+<text x="40" y="76" font-size="14" fill="#6b7380">ゲート 2 個、深さ 1</text>
+<rect x="98.0" y="96" width="76" height="136" rx="6" fill="#e3e7ed"/>
+<text x="136.0" y="114" font-size="13" text-anchor="middle" fill="#6b7380">1段目</text>
+<text x="40" y="143" font-size="15" fill="#333a45">q0</text>
+<line x1="70" y1="138" x2="192" y2="138" stroke="#333a45" stroke-width="1.5"/>
+<text x="40" y="203" font-size="15" fill="#333a45">q1</text>
+<line x1="70" y1="198" x2="192" y2="198" stroke="#333a45" stroke-width="1.5"/>
+<rect x="119.0" y="121" width="34" height="34" rx="4" fill="#fff" stroke="#333a45" stroke-width="1.5"/>
+<text x="136.0" y="144" font-size="17" font-weight="700" text-anchor="middle" fill="#333a45">H</text>
+<rect x="119.0" y="181" width="34" height="34" rx="4" fill="#fff" stroke="#333a45" stroke-width="1.5"/>
+<text x="136.0" y="204" font-size="17" font-weight="700" text-anchor="middle" fill="#333a45">H</text>
+<path d="M98 256 V262 H174 V256" fill="none" stroke="#333a45" stroke-width="1.5"/>
+<text x="136.0" y="284" font-size="14" text-anchor="middle" fill="#333a45">深さ 1(横に1段)</text>
+<text x="420" y="52" font-size="17" font-weight="700" fill="#333a45">H と CNOT の回路</text>
+<text x="420" y="76" font-size="14" fill="#6b7380">ゲート 2 個、深さ 2</text>
+<rect x="478.0" y="96" width="76" height="136" rx="6" fill="#e3e7ed"/>
+<text x="516.0" y="114" font-size="13" text-anchor="middle" fill="#6b7380">1段目</text>
+<rect x="562.0" y="96" width="76" height="136" rx="6" fill="#e3e7ed"/>
+<text x="600.0" y="114" font-size="13" text-anchor="middle" fill="#6b7380">2段目</text>
+<text x="420" y="143" font-size="15" fill="#333a45">q0</text>
+<line x1="450" y1="138" x2="656" y2="138" stroke="#333a45" stroke-width="1.5"/>
+<text x="420" y="203" font-size="15" fill="#333a45">q1</text>
+<line x1="450" y1="198" x2="656" y2="198" stroke="#333a45" stroke-width="1.5"/>
+<rect x="499.0" y="121" width="34" height="34" rx="4" fill="#fff" stroke="#333a45" stroke-width="1.5"/>
+<text x="516.0" y="144" font-size="17" font-weight="700" text-anchor="middle" fill="#333a45">H</text>
+<line x1="600.0" y1="138" x2="600.0" y2="198" stroke="#333a45" stroke-width="1.5"/>
+<circle cx="600.0" cy="138" r="5" fill="#333a45"/>
+<circle cx="600.0" cy="198" r="14" fill="#fff" stroke="#333a45" stroke-width="1.5"/>
+<line x1="586.0" y1="198" x2="614.0" y2="198" stroke="#333a45" stroke-width="1.5"/>
+<line x1="600.0" y1="184" x2="600.0" y2="212" stroke="#333a45" stroke-width="1.5"/>
+<path d="M478 256 V262 H638 V256" fill="none" stroke="#333a45" stroke-width="1.5"/>
+<text x="558.0" y="284" font-size="14" text-anchor="middle" fill="#333a45">深さ 2(横に2段)</text>
+</g>
+</svg>

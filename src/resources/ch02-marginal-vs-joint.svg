@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 360" width="860" height="360" role="img" aria-label="量子ビットを1つずつ見ると、どちらの回路も0と1がほぼ半々。結果を組で見ると、独立に H をかけた回路は4通り、H と CNOT の回路は2通り">
+<rect x="0.5" y="0.5" width="859" height="359" rx="10" fill="#f6f7f9" stroke="#c9ced6"/>
+<g font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic',sans-serif">
+<text x="30" y="44" font-size="17" font-weight="700" fill="#333a45">独立に H をかけた回路</text>
+<text x="196" y="84" font-size="13" text-anchor="middle" fill="#6b7380">1つ目の量子ビットの結果</text>
+<text x="44" y="182" font-size="13" text-anchor="middle" fill="#6b7380" transform="rotate(-90 44 182)">2つ目の量子ビットの結果</text>
+<text x="148.0" y="108" font-size="15" text-anchor="middle" fill="#333a45">0</text>
+<text x="88" y="155.0" font-size="15" text-anchor="end" fill="#333a45">0</text>
+<text x="244.0" y="108" font-size="15" text-anchor="middle" fill="#333a45">1</text>
+<text x="88" y="219.0" font-size="15" text-anchor="end" fill="#333a45">1</text>
+<rect x="100" y="118" width="96" height="64" fill="#dcdfe5" stroke="#9aa1ad" stroke-width="1"/>
+<text x="148.0" y="157" font-size="19" font-weight="700" text-anchor="middle" fill="#333a45">24.7%</text>
+<rect x="196" y="118" width="96" height="64" fill="#d9dce2" stroke="#9aa1ad" stroke-width="1"/>
+<text x="244.0" y="157" font-size="19" font-weight="700" text-anchor="middle" fill="#333a45">27.9%</text>
+<rect x="100" y="182" width="96" height="64" fill="#dcdfe5" stroke="#9aa1ad" stroke-width="1"/>
+<text x="148.0" y="221" font-size="19" font-weight="700" text-anchor="middle" fill="#333a45">25.1%</text>
+<rect x="196" y="182" width="96" height="64" fill="#dfe2e8" stroke="#9aa1ad" stroke-width="1"/>
+<text x="244.0" y="221" font-size="19" font-weight="700" text-anchor="middle" fill="#333a45">22.3%</text>
+<text x="148.0" y="270" font-size="16" text-anchor="middle" fill="#333a45">約50%</text>
+<text x="304" y="155.0" font-size="16" fill="#333a45">約50%</text>
+<text x="244.0" y="270" font-size="16" text-anchor="middle" fill="#333a45">約50%</text>
+<text x="304" y="219.0" font-size="16" fill="#333a45">約50%</text>
+<text x="196" y="292" font-size="12" text-anchor="middle" fill="#6b7380">1つ目だけを見る</text>
+<text x="304" y="270" font-size="12" fill="#6b7380">2つ目だけ</text>
+<text x="304" y="286" font-size="12" fill="#6b7380">を見る</text>
+<text x="196" y="328" font-size="15" font-weight="700" text-anchor="middle" fill="#333a45">出力の組み合わせは4通り</text>
+<text x="450" y="44" font-size="17" font-weight="700" fill="#333a45">H と CNOT の回路</text>
+<text x="616" y="84" font-size="13" text-anchor="middle" fill="#6b7380">1つ目の量子ビットの結果</text>
+<text x="464" y="182" font-size="13" text-anchor="middle" fill="#6b7380" transform="rotate(-90 464 182)">2つ目の量子ビットの結果</text>
+<text x="568.0" y="108" font-size="15" text-anchor="middle" fill="#333a45">0</text>
+<text x="508" y="155.0" font-size="15" text-anchor="end" fill="#333a45">0</text>
+<text x="664.0" y="108" font-size="15" text-anchor="middle" fill="#333a45">1</text>
+<text x="508" y="219.0" font-size="15" text-anchor="end" fill="#333a45">1</text>
+<rect x="520" y="118" width="96" height="64" fill="#bfc2c8" stroke="#9aa1ad" stroke-width="1"/>
+<text x="568.0" y="157" font-size="19" font-weight="700" text-anchor="middle" fill="#333a45">52.6%</text>
+<rect x="616" y="118" width="96" height="64" fill="#ffffff" stroke="#9aa1ad" stroke-width="1"/>
+<text x="664.0" y="157" font-size="19" font-weight="400" text-anchor="middle" fill="#6b7380">0.0%</text>
+<rect x="520" y="182" width="96" height="64" fill="#ffffff" stroke="#9aa1ad" stroke-width="1"/>
+<text x="568.0" y="221" font-size="19" font-weight="400" text-anchor="middle" fill="#6b7380">0.0%</text>
+<rect x="616" y="182" width="96" height="64" fill="#c5c8ce" stroke="#9aa1ad" stroke-width="1"/>
+<text x="664.0" y="221" font-size="19" font-weight="700" text-anchor="middle" fill="#333a45">47.4%</text>
+<text x="568.0" y="270" font-size="16" text-anchor="middle" fill="#333a45">約50%</text>
+<text x="724" y="155.0" font-size="16" fill="#333a45">約50%</text>
+<text x="664.0" y="270" font-size="16" text-anchor="middle" fill="#333a45">約50%</text>
+<text x="724" y="219.0" font-size="16" fill="#333a45">約50%</text>
+<text x="616" y="292" font-size="12" text-anchor="middle" fill="#6b7380">1つ目だけを見る</text>
+<text x="724" y="270" font-size="12" fill="#6b7380">2つ目だけ</text>
+<text x="724" y="286" font-size="12" fill="#6b7380">を見る</text>
+<text x="616" y="328" font-size="15" font-weight="700" text-anchor="middle" fill="#333a45">出力の組み合わせは2通り</text>
+</g>
+</svg>
