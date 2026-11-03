@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 190" role="img" aria-label="N個の箱が並んでいて、そのうち1つだけが当たり。どの箱も中身は見えず、開けてみるまで当たりかどうか分からない。">
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; fill: #1d2430; }
+      .lbl { font-size: 13px; text-anchor: middle; }
+      .win-lbl { font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .q { font-size: 26px; font-weight: 700; fill: #5b6573; text-anchor: middle; }
+      .dots { font-size: 24px; fill: #5b6573; text-anchor: middle; }
+      .cap { font-size: 13px; fill: #5b6573; }
+      .box { fill: #dfe3e9; stroke: #9aa3af; stroke-width: 1.5; }
+      .win { fill: #fff1c2; stroke: #d19a00; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="720" height="190" rx="10" fill="#f6f7f9" stroke="#c9ced6"/>
+
+  <rect class="box" x="36"  y="40" width="72" height="64" rx="6"/><text class="q" x="72"  y="82">？</text><text class="lbl" x="72"  y="128">箱 1</text>
+  <rect class="box" x="132" y="40" width="72" height="64" rx="6"/><text class="q" x="168" y="82">？</text><text class="lbl" x="168" y="128">箱 2</text>
+  <rect class="box" x="228" y="40" width="72" height="64" rx="6"/><text class="q" x="264" y="82">？</text><text class="lbl" x="264" y="128">箱 3</text>
+  <text class="dots" x="360" y="80">…</text>
+  <rect class="win" x="420" y="40" width="72" height="64" rx="6"/><text class="q" x="456" y="82">？</text><text class="win-lbl" x="456" y="128">箱 k(当たり)</text>
+  <text class="dots" x="552" y="80">…</text>
+  <rect class="box" x="612" y="40" width="72" height="64" rx="6"/><text class="q" x="648" y="82">？</text><text class="lbl" x="648" y="128">箱 N</text>
+
+  <text class="cap" x="36" y="26">N 個の箱が並んでいる</text>
+  <text class="cap" x="36" y="164">当たりは1つだけ(ここでは箱 k)。ただし、開けてみるまで、どれが当たりかは分からない</text>
+</svg>

@@ -6,14 +6,18 @@ project:
   github: quantum-tokyo/quantum-learning-roadmap
   toc:
     - file: intro.md
-    - file: learning-roadmap.md
-      title: 学習ロードマップ
-    - title: Chapter0 イントロダクション
+    - title: Qiskitで学ぶ量子コンピューティング
+      children:
+        - file: ch01-usecases.md
+          title: 第1章 量子コンピューターの使い道
+        - file: ch02-basics.ipynb
+          title: 第2章 量子計算の基礎
+        - file: ch03-strengths-and-limits.ipynb
+          title: 第3章 量子計算の利点と制約
+    - title: 過去のQuantum Challenge
       children:
         - file: 2024-spring-lab0-welcome-ja.ipynb
           title: ようこそ、そしてハローワールド(2024)
-    - title: Chapter1 量子回路の構築
-      children:
         - file: 2020-w1-a-adder-ja.ipynb
           title: 量子回路の基礎 - 加算器 (2020)
         - file: 2021-spring-lab1-toffoli.ipynb
@@ -26,22 +30,16 @@ project:
           title: 振幅増幅 (Groverのアルゴリズム) (2020)
         - file: 2023-spring-lab3-iqpe.ipynb
           title: 量子位相推定 (2023)
-    - title: Chapter2 量子コンピューターの応用
-      children:
         - file: 2021-spring-lab2-shor-ja.ipynb
           title: ショアのアルゴリズム (2021)
         - file: 2021-autumn-lab3-qml-ja.ipynb
           title: 量子機械学習による画像分類 (2021)
-    - title: Chapter3 量子コンピューターのエラー訂正・緩和
-      children:
         - file: 2021-spring-lab3-error-ja.ipynb
           title: 量子エラー訂正 (2021)
         - file: 2023-spring-lab4-error-correction.ipynb
           title: 量子エラー訂正 (2023)
         - file: 2024-spring-lab4-vqc-hw-ja.ipynb
           title: 実機上でのVQCのテスト (2024)
-    - title: ChapterX Qiskitを学ぶ
-      children:
         - file: 2024-spring-lab1-qiskit10-ja-part1.ipynb
           title: 量子状態の構築と測定 (2024)
         - file: 2022-autumn-lab1-runtime-ja.ipynb

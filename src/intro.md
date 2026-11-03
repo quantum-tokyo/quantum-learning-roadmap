@@ -1,28 +1,13 @@
 # Quantum Learning Roadmap
 
-このページは [Quantum Tokyo](https://github.com/quantum-tokyo) コミュニティが作成した、量子コンピューティングの学習教材です。学習ロードマップに沿って、さまざまなリソースを題材に、オープンソースの開発キット Qiskit を使いながら量子コンピューティングの基礎から応用までを段階的に学ぶことが出来ます。
+このページは [Quantum Tokyo](https://github.com/quantum-tokyo) コミュニティが作成した、量子コンピューティングの学習教材です。さまざまなリソースを題材に、オープンソースの開発キット Qiskit を使いながら量子コンピューティングの基礎から応用までを段階的に学ぶことが出来ます。
 
 現在は IBM Quantum Challenge の過去問題を中心に構成しています。    
 IBM Quantum Challenge は2019年から IBM 主催で開催されている量子コンピュータのイベントで、Qiskit を使って量子コンピューティングに関する問題に取り組みます。
 
-今後、学習ロードマップに沿って他のリソースを基にしたコンテンツも追加していく予定です。
+今後、他のリソースを基にしたコンテンツも追加していく予定です。
 
 ![](./resources/group-working.png)
-
-## Labを始める前に
-一部のLabでは実行するにあたってIBM QuantumのAPIトークンを必要とするものがあります。  
-自分でハンズオンを進めたい方は以下の手順に沿ってAPIトークン情報の配置を行ってください。
-
-![APIトークンの取得](./resources/ibmq_get_apitoken.png)
-
-1.   [IBM Quantum Platform](https://quantum.ibm.com/)に移動します。
-1.   右上にある API トークン (上の図参照) をクリックしてコピーします。
-1.   このプロジェクトのルートディレクトリの配下に`.env`ファイルを作成します。
-1.   `.env.sample`を参考に、3でコピーしたAPI トークンを`QXToken`の値に貼り付けます。
-
-```
-QXToken=[.envを作成し、ここにAPIトークンを貼り付けます]
-```
 
 ## 過去の IBM Quantum Challenge一覧
 
