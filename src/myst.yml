@@ -11,7 +11,7 @@ project:
         - file: ch01-usecases.md
           title: 第1章 量子コンピューターの使い道
         - file: ch02-basics.ipynb
-          title: 第2章 量子コンピューターの基礎
+          title: 第2章 量子計算の基礎
         - file: ch03-strengths-and-limits.ipynb
           title: 第3章 量子計算の利点と制約
     - title: 過去のQuantum Challenge
