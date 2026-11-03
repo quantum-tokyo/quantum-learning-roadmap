@@ -8,6 +8,8 @@ project:
     - file: intro.md
     - title: Qiskitで学ぶ量子コンピューティング
       children:
+        - file: ch01-usecases.md
+          title: 第1章 量子コンピューターの使い道
         - file: ch02-basics.ipynb
           title: 第2章 量子コンピューターの基礎
         - file: ch03-strengths-and-limits.ipynb
