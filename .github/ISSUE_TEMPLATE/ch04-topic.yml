@@ -1,0 +1,29 @@
+name: 第4章 題材の提案
+description: 第4章「サンプルユースケース」で取り組む題材を提案します
+title: "[第4章] "
+labels: ["ch04", "topic-proposal"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: 領域
+      options:
+        - 最適化
+        - 化学
+        - 機械学習
+        - 暗号
+        - その他(新しい領域)
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 課題(何を解きたいか)
+      description: 技術ではなく、現場の課題から書いてください。
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: 出典・参考資料
+      description: 論文、IBM Quantum Challenge、NEDO事例などの URL を書いてください。記憶に基づく内容は、そう分かるように書いてください。
