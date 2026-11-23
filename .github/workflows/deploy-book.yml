@@ -20,6 +20,10 @@ jobs:
   # Build the book HTML with the MyST engine (Jupyter Book 2)
   build:
     runs-on: ubuntu-latest
+    # The build takes well under a minute. Without a limit, a build that hangs
+    # (as it did when the MyST theme outgrew jupyter-book) holds the "pages"
+    # concurrency group for the default 6 hours and blocks every later deploy.
+    timeout-minutes: 15
     steps:
     - uses: actions/checkout@v4
 

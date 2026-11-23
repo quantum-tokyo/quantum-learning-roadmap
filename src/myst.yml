@@ -61,4 +61,8 @@ site:
     logo: ./resources/quantum-tokyo-icon.jpg
     favicon: ./resources/quantum-tokyo-icon.ico
     folders: true
-  template: book-theme
+  # Pinned: "book-theme" fetches the newest theme on every clean build, and
+  # once that outgrew jupyter-book 2.1.5 the build printed "does not support
+  # this version of the MyST theme" and hung. 1.4.1 is the newest theme this
+  # engine supports. Bump it together with jupyter-book in pyproject.toml.
+  template: https://github.com/jupyter-book/myst-theme/releases/download/myst-to-react%401.4.1/book-theme.zip
