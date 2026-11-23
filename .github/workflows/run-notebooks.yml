@@ -11,7 +11,11 @@ on:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    # Pinned: on ubuntu-26.04 apt installs Graphviz 14, and the transpilation
+    # Lab's plot_circuit_layout fails with "neato -T png" exit status 1 (#17).
+    # Graphviz 2.42 on ubuntu-24.04 works. Move back to ubuntu-latest once #17
+    # is fixed.
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
     - uses: actions/checkout@v4
