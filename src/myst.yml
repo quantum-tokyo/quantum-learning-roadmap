@@ -14,6 +14,8 @@ project:
           title: 第2章 量子計算の基礎
         - file: ch03-strengths-and-limits.ipynb
           title: 第3章 量子計算の利点と制約
+        - file: ch04-first-run.ipynb
+          title: 第4章 量子計算の実行例
     - title: 過去のQuantum Challenge
       children:
         - file: 2024-spring-lab0-welcome-ja.ipynb
